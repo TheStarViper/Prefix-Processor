@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Emscripten",
+            "compilerPath": "C:/raylib/emsdk/upstream/emscripten/em++.bat",
+            "includePath": [
+                "${workspaceFolder}/backend/include",
+                "${workspaceFolder}/backend/src",
+                "C:/raylib/emsdk/upstream/emscripten/system/include",
+                "C:/raylib/emsdk/upstream/emscripten/system/include/libcxx",
+                "C:/raylib/emsdk/upstream/emscripten/system/include/libc",
+                "C:/raylib/emsdk/upstream/emscripten/cache/sysroot/include"
+            ],
+            "defines": [
+                "__EMSCRIPTEN__"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64",
+            "compilerArgs": [
+                "-std=c++17"
+            ]
+        }
+    ],
+    "version": 4
+}
