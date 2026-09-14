@@ -2,7 +2,7 @@
 #include <iostream>
 
 extern "C" {
-    int32_t add_numbers(int32_t a, int32_t b) noexcept {
+    int add_numbers(int a, int b) noexcept {
         return a + b;
     }
 
