@@ -10,12 +10,12 @@
 	import { getWord, getPrefix, isValid } from "$lib/logic";
 	import confetti from "canvas-confetti";
 	import { playSound } from "$lib/sound";
-	import Timer from "$lib/components/Timer.svelte";
+	import Timer, { STARTING_SECONDS } from "$lib/components/Timer.svelte";
 
 	let word: string = $state("");
 	let prefix: string = $state("");
 
-	let seconds: number = $state(30);
+	let seconds: number = $state(STARTING_SECONDS);
 
 	function updateWordAndPrefix() {
 		word = getWord();

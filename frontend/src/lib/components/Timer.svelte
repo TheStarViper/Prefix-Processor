@@ -1,3 +1,7 @@
+<script module>
+	export const STARTING_SECONDS = 30;
+</script>
+
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { slide } from "svelte/transition";
@@ -11,54 +15,65 @@
 
 	let elapsedSeconds: number = $state(0);
 
-	const clampPositive = (num: number) => Math.max(num, 0);
+	let bars: number[] = $derived.by(() => {
+		const fullBars = Array.from({
+			length: Math.floor((seconds - elapsedSeconds) / STARTING_SECONDS),
+		}).map(() => STARTING_SECONDS);
 
-	let display = $derived(
-		clampPositive(Math.round((seconds - elapsedSeconds) * 10) / 10),
-	);
+		const remainder = (seconds - elapsedSeconds) % STARTING_SECONDS;
+
+		if (fullBars.length === 0) return [remainder];
+
+		if (remainder === 0) return fullBars;
+
+		return [...fullBars, remainder];
+	});
 
 	onMount(() => {
 		setInterval(() => {
-			if (display > 0) elapsedSeconds += 0.1;
+			elapsedSeconds += 0.1;
+			if (seconds - elapsedSeconds <= 0) outOfTime();
 		}, 100);
-	});
-
-	$effect(() => {
-		if (display === 0) outOfTime();
 	});
 </script>
 
-<!--
-	the fact that it's keyed to seconds and not display is very important btw.
-	It means that the transition only triggers when the total seconds increases,
-	not when time elapses.
--->
-<div>
-	{#key seconds}
-		<span transition:slide={{ axis: "x" }}>{display}s</span>
-	{/key}
+<div class="container">
+	<span>{Math.round((seconds - elapsedSeconds) * 10) / 10}s</span>
+
+	{#each bars as bar, index (index)}
+		<div class="progress" transition:slide={{ axis: "x", duration: 300 }}>
+			<div
+				class="progress-bar"
+				style:width="{(bar / STARTING_SECONDS) * 100}%"
+			></div>
+		</div>
+	{/each}
 </div>
 
 <style>
-	div {
-		display: flex;
-		flex-direction: row-reverse;
+	span {
+		min-width: 5ch;
 	}
 
-	span {
-		/*
-		up to 3 main chars + 1 decimal point + 1 decimal point
-		+ inline padding * 2
-		*/
-		min-width: calc(6ch + 3rem);
+	.container {
+		display: flex;
+		flex-direction: row;
+		width: 50vw;
+		gap: 1em;
+	}
 
-		font-size: 2rem;
-		font-weight: 600;
-		text-align: center;
-
-		padding: 0.75rem 1.5rem;
-		background-color: #fff;
+	.progress {
+		width: 100%;
+		background-color: #e0e0e0;
 		border: 2px solid #000;
 		box-shadow: 4px 4px 0 #000;
+		height: 1.5rem;
+	}
+
+	.progress-bar {
+		height: 100%;
+		background-color: #000;
+		width: 0;
+		transition: width 300ms var(--timing);
 	}
 </style>
