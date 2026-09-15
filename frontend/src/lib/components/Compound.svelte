@@ -1,32 +1,26 @@
+<!-- The display module for the prefix + word combo -->
+
 <script lang="ts">
-	import { getWord, getPrefix, isValid } from "$lib/logic";
-	import { onMount } from "svelte";
-
-	let word: string = $state("");
-	let prefix: string = $state("");
-
-	function updateWordAndPrefix() {
-		word = getWord();
-		prefix = getPrefix();
+	interface Props {
+		prefix: string;
+		word: string;
 	}
 
-	onMount(() => {
-		updateWordAndPrefix();
-	});
+	let { prefix, word }: Props = $props();
 </script>
 
-<section class="center">
+<div>
 	<h2>
 		<span id="prefix">{prefix}-</span>
 		<span id="plus">+</span>
 		<span id="word">{word}</span>
 	</h2>
-</section>
+</div>
 
 <style>
-	section.center {
+	div {
 		display: grid;
-		min-height: 100vh;
+		min-height: 100%;
 		place-content: center;
 	}
 
