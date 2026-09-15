@@ -25,6 +25,8 @@ const fetch_cached_prefix = Module.cwrap('fetch_cached_prefix', 'string', []);
 const get_current_base = Module.cwrap('get_current_base', 'string', []);
 const get_current_is_valid = Module.cwrap('get_current_is_valid', 'number', []);
 const randomize_prefix = Module.cwrap('randomize_prefix', 'void', []);
+const answer_btn_pressed = Module.cwrap('answer_btn_pressed', 'number', ['number']);
+
 randomize_prefix();
 console.log('Generated questions:');
 for (let i = 0; i < 10; i++) {
@@ -34,6 +36,8 @@ for (let i = 0; i < 10; i++) {
     const base = get_current_base();
     const valid = get_current_is_valid();
     console.log(` - ${prefix} + ${base} = ${valid ? 'valid' : 'invalid'}`);
+    const answer = answer_btn_pressed();
+    console.log(answer);
 }
 
 // dictionary load and prefix fetching test #1 ill just keep these around for archive

@@ -26,6 +26,7 @@ interface WasmModule {
   _add_numbers(_0: number, _1: number): number;
   _multiply_floats(_0: number, _1: number): number;
   _main(_0: number, _1: number): number;
+  _answer_btn_pressed(_0: number): number;
   _load_dictionary(): number;
   _get_random_word(): number;
   _get_random_word_with_prefix(): number;

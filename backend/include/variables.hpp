@@ -16,3 +16,5 @@ inline std::string cached_prefix = "none";
 inline std::string current_base = "none";
 inline bool current_is_valid = false;
 inline std::unordered_set<std::string> word_set;
+
+inline float time_remaining;
