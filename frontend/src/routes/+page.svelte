@@ -9,6 +9,7 @@
 	// misc imports
 	import { getWord, getPrefix, isValid } from "$lib/logic";
 	import confetti from "canvas-confetti";
+	import { decodeSounds } from "$lib/sound";
 
 	let word: string = $state("");
 	let prefix: string = $state("");
@@ -19,6 +20,10 @@
 	}
 
 	function checkAnswer(answer: boolean) {
+		// This is the first guaranteed user interaction, so we hijack it to
+		// decode the sounds
+		decodeSounds();
+
 		if (answer === isValid(word, prefix)) {
 			correct();
 		} else {
