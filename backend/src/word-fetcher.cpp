@@ -73,8 +73,8 @@ extern "C"{
         return lastword.c_str();
     }
 
-    const char* get_random_word_with_prefix(const char* prefix){
-        std::string prefix_str = to_lower(std::string(prefix));
+    const char* get_random_word_with_prefix(){
+        std::string prefix_str = to_lower(std::string(cached_prefix));
         std::vector<std::string> matches;
 
         for (const auto& word : words){
@@ -91,5 +91,32 @@ extern "C"{
         std::uniform_int_distribution<size_t> index_picker(0, matches.size() - 1);
         lastword = matches[index_picker(random_engine)];
         return lastword.c_str();
+    }
+
+    void randomize_prefix(){
+        std::string prefix;
+        if (prefixes.empty()) {
+            cached_prefix = "none";
+            return;
+        }
+
+        std::uniform_int_distribution<size_t> index_picker(0, prefixes.size() - 1);
+        prefix = prefixes[index_picker(random_engine)];
+        cached_prefix = prefix;
+    }
+
+    const char* fetch_cached_prefix() {
+        return cached_prefix.c_str();
+    }
+
+    const char* get_random_game_word() {
+        int random_num;
+        std::uniform_int_distribution<size_t> random(1, 2);
+        random_num = random(random_engine);
+        if (random_num == 1) {
+            return get_random_word();
+        } else {
+            return get_random_word_with_prefix();
+        }
     }
 }

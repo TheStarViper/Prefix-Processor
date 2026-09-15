@@ -28,7 +28,8 @@ interface WasmModule {
   _main(_0: number, _1: number): number;
   _load_dictionary(): number;
   _get_random_word(): number;
-  _get_random_word_with_prefix(_0: number): number;
+  _get_random_word_with_prefix(): number;
+  _randomize_prefix(): void;
 }
 
 export type MainModule = WasmModule & typeof RuntimeExports;

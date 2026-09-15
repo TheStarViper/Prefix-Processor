@@ -21,11 +21,12 @@ if (!success) {
 }
 
 
-
-const get_random_word_with_prefix = Module.cwrap('get_random_word_with_prefix', 'string', ['string']);
-console.log('Sample random words with prefix "trans":');
+const get_random_word_with_prefix = Module.cwrap('get_random_word_with_prefix', 'string', []);
+const randomize_prefix = Module.cwrap('randomize_prefix', 'void', []);
+randomize_prefix();
+console.log('Sample random words with prefix: ');
 for (let i = 0; i < 5; i++) {
-    console.log(' -', get_random_word_with_prefix('trans'));
+    console.log(' -', get_random_word_with_prefix());
 }
 
 // compile command from parent dir: mingw32-make -C backend
