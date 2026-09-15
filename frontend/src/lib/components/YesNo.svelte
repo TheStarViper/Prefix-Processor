@@ -1,18 +1,28 @@
 <script lang="ts">
+	import { decodeSounds } from "$lib/sound";
+
 	interface Props {
 		message: string;
 		action: (response: boolean) => void;
 	}
 
 	let { message, action }: Props = $props();
+
+	const interact = async (...params: Parameters<typeof action>) => {
+		// This is the first guaranteed user interaction, so we hijack it to
+		// decode the sounds
+		await decodeSounds();
+
+		action(...params);
+	};
 </script>
 
 <div id="yesno">
 	<p>{message}</p>
 
 	<div class="buttons">
-		<button id="yes" onclick={() => action(true)}>Yes</button>
-		<button id="no" onclick={() => action(false)}>No</button>
+		<button id="yes" onclick={() => interact(true)}>Yes</button>
+		<button id="no" onclick={() => interact(false)}>No</button>
 	</div>
 </div>
 

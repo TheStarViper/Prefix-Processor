@@ -9,7 +9,7 @@
 	// misc imports
 	import { getWord, getPrefix, isValid } from "$lib/logic";
 	import confetti from "canvas-confetti";
-	import { decodeSounds } from "$lib/sound";
+	import { playSound } from "$lib/sound";
 
 	let word: string = $state("");
 	let prefix: string = $state("");
@@ -20,10 +20,6 @@
 	}
 
 	function checkAnswer(answer: boolean) {
-		// This is the first guaranteed user interaction, so we hijack it to
-		// decode the sounds
-		decodeSounds();
-
 		if (answer === isValid(word, prefix)) {
 			correct();
 		} else {
@@ -34,6 +30,7 @@
 	}
 
 	function correct() {
+		playSound("correct.wav");
 		confetti({
 			particleCount: 150,
 			startVelocity: 55,
@@ -51,7 +48,7 @@
 	}
 
 	function wrong() {
-		console.warn("*buzzer sound* wrong!");
+		playSound("incorrect.wav");
 	}
 
 	onMount(() => {

@@ -8,7 +8,13 @@ import { base } from "$app/paths";
 /**
  * Master list of all sounds.
  */
-export const SOUNDS: string[] = [] as const;
+export const SOUNDS: string[] = [
+	// https://freesound.org/people/Beetlemuse/sounds/528957/
+	"correct.wav",
+
+	// https://freesound.org/people/Beetlemuse/sounds/587253/
+	"incorrect.wav",
+] as const;
 export type Sound = (typeof SOUNDS)[number];
 
 const getSoundPath: (sound: Sound) => string = (sound: Sound) =>
