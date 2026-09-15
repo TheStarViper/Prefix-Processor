@@ -1,12 +1,19 @@
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 import createModule from '../../frontend/src/lib/cpp/cpp_module.js'; 
 
-const Module = await createModule();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const moduleDir = path.resolve(__dirname, '../../frontend/src/lib/cpp');
 
-const loadDictionary = Module.cwrap('loadDictionary', 'number', []);
-const getRandomWord = Module.cwrap('getRandomWord', 'string', []);
+const Module = await createModule({
+    locateFile: (filename) => path.join(moduleDir, filename),
+});
 
-const success = loadDictionary();
-console.log('loadDictionary() returned:', success);
+const load_dictionary = Module.cwrap('load_dictionary', 'number', []);
+const get_random_word = Module.cwrap('get_random_word', 'string', []);
+
+const success = load_dictionary();
+console.log('words loaded:', success);
 
 if (!success) {
     console.log('Dictionary failed to load — check the /assets path and CSV parsing.');
@@ -14,8 +21,8 @@ if (!success) {
 }
 
 console.log('Sample random words:');
-for (let i = 0; i < 10; i++) {
-    console.log(' -', getRandomWord());
+for (let i = 0; i < 5; i++) {
+    console.log(' -', get_random_word());
 }
 
 // compile command from parent dir: mingw32-make -C backend

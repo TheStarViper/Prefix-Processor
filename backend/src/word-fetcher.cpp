@@ -6,9 +6,10 @@
 #include <string>
 #include <vector>
 #include <random>
+#include <ctime>
 
 std::vector<std::string> words;
-std::mt19937 randomEngine(std::random_device{}());//random num gen
+std::mt19937 random_engine(static_cast<unsigned int>(std::time(nullptr)));
 std::string lastword;
 
 std::string to_lower(std::string text) {
@@ -53,10 +54,17 @@ extern "C"{
         }
 
 
-        return words.empty() ? 0 : 1;
+        return words.size();
     }
 
     const char* get_random_word(){
+        if (words.empty()) {
+            lastword = "none";
+            return lastword.c_str();
+        }
 
+        std::uniform_int_distribution<size_t> index_picker(0, words.size() - 1);
+        lastword = words[index_picker(random_engine)];
+        return lastword.c_str();
     }
 }
