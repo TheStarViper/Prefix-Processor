@@ -26,7 +26,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="scss">
 	#yesno {
 		display: grid;
 		height: 100%;
@@ -39,6 +39,7 @@
 	p {
 		text-align: center;
 		font-size: 1.5rem;
+		font-variation-settings: "slnt" -7;
 	}
 
 	.buttons {
@@ -54,31 +55,39 @@
 	button {
 		height: 100%;
 		width: 100%;
-		border-radius: 0.6em;
+
 		background: var(--button-bg);
-		border: 2px solid color-mix(in srgb, var(--button-bg) 90%, black);
 
 		font-size: 2rem;
-		color: #111;
+		text-align: center;
+		color: #000;
+		font-style: oblique;
 
-		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+		padding: 0.75rem 1.5rem;
+
+		background-color: #fff;
+		border: 2px solid #000;
+		box-shadow: 4px 4px 0 #000;
 
 		transition:
-			filter 0.1s var(--timing),
+			color 0.15s var(--timing),
 			transform 0.2s var(--timing),
 			box-shadow 0.2s var(--timing);
-	}
 
-	button:hover {
-		filter: saturate(130%);
-		transform: translateY(-0.15em);
-		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-	}
+		cursor: pointer;
 
-	#yes {
-		--button-bg: #98c379;
-	}
-	#no {
-		--button-bg: #ef657a;
+		&:hover,
+		&:active {
+			color: var(--button-color);
+			transform: translateY(-0.15em);
+			box-shadow: 6px 6px 0 var(--button-color);
+		}
+
+		&#yes {
+			--button-color: #98c379;
+		}
+		&#no {
+			--button-color: #ef657a;
+		}
 	}
 </style>
