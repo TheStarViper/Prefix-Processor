@@ -26,7 +26,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="scss">
 	#yesno {
 		display: grid;
 		height: 100%;
@@ -75,19 +75,19 @@
 			box-shadow 0.2s var(--timing);
 
 		cursor: pointer;
-	}
 
-	button:hover,
-	button:active {
-		color: var(--button-color);
-		transform: translateY(-0.15em);
-		box-shadow: 6px 6px 0 var(--button-color);
-	}
+		&:hover,
+		&:active {
+			color: var(--button-color);
+			transform: translateY(-0.15em);
+			box-shadow: 6px 6px 0 var(--button-color);
+		}
 
-	#yes {
-		--button-color: #98c379;
-	}
-	#no {
-		--button-color: #ef657a;
+		&#yes {
+			--button-color: #98c379;
+		}
+		&#no {
+			--button-color: #ef657a;
+		}
 	}
 </style>

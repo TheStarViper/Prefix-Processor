@@ -40,32 +40,32 @@
 		display: grid;
 		grid-template-columns: 1fr max-content 1fr;
 		align-items: center;
-	}
 
-	#prefix {
-		margin-left: auto;
-		color: #ef657a;
-	}
+		span {
+			display: flex;
+			flex-direction: column;
+			font-size: 5rem;
+			width: fit-content;
 
-	#word {
-		color: #5dafef;
-	}
+			padding: 1rem;
+			border: 2px solid #000;
+			box-shadow: 4px 4px 0 #000;
+			margin-bottom: 1rem;
 
-	h2 span {
-		display: flex;
-		flex-direction: column;
-		font-size: 5rem;
-		width: fit-content;
+			&#prefix {
+				margin-left: auto;
+				color: #ef657a;
+			}
 
-		padding: 1rem;
-		border: 2px solid #000;
-		box-shadow: 4px 4px 0 #000;
-		margin-bottom: 1rem;
-	}
+			&#word {
+				color: #5dafef;
+			}
 
-	#plus {
-		margin-inline: 0.8em;
-		font-size: 3rem;
-		color: #111;
+			&#plus {
+				margin-inline: 0.8em;
+				font-size: 3rem;
+				color: #111;
+			}
+		}
 	}
 </style>
