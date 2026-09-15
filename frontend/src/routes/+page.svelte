@@ -57,7 +57,9 @@
 </script>
 
 <main>
-	<header></header>
+	<header>
+		<h1>Prefix Processor</h1>
+	</header>
 
 	<section>
 		<Compound {word} {prefix} />
@@ -81,7 +83,18 @@
 		grid-template-rows: var(--header-height) 3fr 2fr;
 	}
 
-	main * {
+	main > section {
 		border-block: 1px solid black;
+	}
+
+	header {
+		height: 100%;
+		display: grid;
+		place-content: center;
+	}
+
+	h1 {
+		text-align: center;
+		font-size: 3rem;
 	}
 </style>
