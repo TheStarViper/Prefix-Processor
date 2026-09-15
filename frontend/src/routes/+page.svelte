@@ -1,6 +1,7 @@
 <script lang="ts">
 	// component imports
 	import Compound from "$lib/components/Compound.svelte";
+	import YesNo from "$lib/components/YesNo.svelte";
 
 	// .ts imports
 	import { getWord, getPrefix, isValid } from "$lib/logic";
@@ -28,7 +29,13 @@
 		<Compound {word} {prefix} />
 	</section>
 
-	<section></section>
+	<section>
+		<YesNo
+			message="Is it a valid English word?"
+			noAction={() => {}}
+			yesAction={() => {}}
+		/>
+	</section>
 </main>
 
 <style>
