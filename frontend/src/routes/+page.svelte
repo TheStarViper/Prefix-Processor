@@ -10,9 +10,12 @@
 	import { getWord, getPrefix, isValid } from "$lib/logic";
 	import confetti from "canvas-confetti";
 	import { playSound } from "$lib/sound";
+	import Timer from "$lib/components/Timer.svelte";
 
 	let word: string = $state("");
 	let prefix: string = $state("");
+
+	let seconds: number = $state(30);
 
 	function updateWordAndPrefix() {
 		word = getWord();
@@ -45,10 +48,17 @@
 			spread: 50,
 			origin: { x: 1 },
 		});
+
+		seconds += 2;
 	}
 
 	function wrong() {
 		playSound("incorrect.wav");
+		seconds -= 5;
+	}
+
+	function outOfTime() {
+		alert("Out of time!");
 	}
 
 	onMount(() => {
@@ -58,7 +68,7 @@
 
 <main>
 	<header>
-		<h1>Prefix Processor</h1>
+		<Timer {seconds} {outOfTime} />
 	</header>
 
 	<section>

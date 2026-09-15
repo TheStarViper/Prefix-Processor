@@ -73,6 +73,8 @@
 			color 0.15s var(--timing),
 			transform 0.2s var(--timing),
 			box-shadow 0.2s var(--timing);
+
+		cursor: pointer;
 	}
 
 	button:hover,

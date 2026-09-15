@@ -18,7 +18,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" />
 	<link
-		href="https://fonts.googleapis.com/css2?family=Recursive:slnt,CASL,CRSV,MONO@-15..0,0,1,0.52&display=swap"
+		href="https://fonts.googleapis.com/css2?family=Recursive:slnt,wght,CASL,CRSV,MONO@-15..0,300..1000,0,1,0.52&display=swap"
 		rel="stylesheet"
 	/>
 </svelte:head>
