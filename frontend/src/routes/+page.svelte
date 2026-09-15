@@ -95,6 +95,6 @@
 
 	h1 {
 		text-align: center;
-		font-size: 3rem;
+		font-size: 4rem;
 	}
 </style>

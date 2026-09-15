@@ -39,6 +39,7 @@
 	p {
 		text-align: center;
 		font-size: 1.5rem;
+		font-variation-settings: "slnt" -7;
 	}
 
 	.buttons {

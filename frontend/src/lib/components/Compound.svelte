@@ -47,10 +47,8 @@
 	}
 
 	#plus {
-		margin-inline: 1em;
+		margin-inline: 0.8em;
 		font-size: 3rem;
-		font-family:
-			"Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 		color: #111;
 	}
 </style>
