@@ -11,4 +11,7 @@ extern "C"{
 
     EMSCRIPTEN_KEEPALIVE
     const char* get_random_word();
+
+    EMSCRIPTEN_KEEPALIVE
+    const char* get_random_word_with_prefix(const char* prefix);
 }

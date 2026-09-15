@@ -32,6 +32,11 @@ bool contains_only_letters(const std::string& text) {
                                          [](unsigned char c) { return std::isalpha(c); });
 }
 
+bool starts_with(const std::string& word, const std::string& prefix) {
+    return word.size() > prefix.size() &&
+           word.compare(0, prefix.size(), prefix) == 0;
+}
+
 extern "C"{
     int load_dictionary(){
         std::ifstream dictionaryfile("assets/dictionary.csv");
@@ -65,6 +70,26 @@ extern "C"{
 
         std::uniform_int_distribution<size_t> index_picker(0, words.size() - 1);
         lastword = words[index_picker(random_engine)];
+        return lastword.c_str();
+    }
+
+    const char* get_random_word_with_prefix(const char* prefix){
+        std::string prefix_str = to_lower(std::string(prefix));
+        std::vector<std::string> matches;
+
+        for (const auto& word : words){
+            if(starts_with(word, prefix_str)){
+                matches.push_back(word);
+            }
+        }
+
+        if (matches.empty()) {
+            lastword = "none";
+            return lastword.c_str();
+        }
+
+        std::uniform_int_distribution<size_t> index_picker(0, matches.size() - 1);
+        lastword = matches[index_picker(random_engine)];
         return lastword.c_str();
     }
 }

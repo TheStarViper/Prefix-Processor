@@ -16,13 +16,16 @@ const success = load_dictionary();
 console.log('words loaded:', success);
 
 if (!success) {
-    console.log('Dictionary failed to load — check the /assets path and CSV parsing.');
+    console.log('Dictionary failed to load - check the /assets path and CSV parsing.');
     process.exit(1);
 }
 
-console.log('Sample random words:');
+
+
+const get_random_word_with_prefix = Module.cwrap('get_random_word_with_prefix', 'string', ['string']);
+console.log('Sample random words with prefix "trans":');
 for (let i = 0; i < 5; i++) {
-    console.log(' -', get_random_word());
+    console.log(' -', get_random_word_with_prefix('trans'));
 }
 
 // compile command from parent dir: mingw32-make -C backend
