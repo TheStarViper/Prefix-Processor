@@ -14,10 +14,10 @@ EMFLAGS = --emit-tsd $(TSD_OUT) \
           -s WASM=1 \
           -s MODULARIZE=1 \
           -s EXPORT_ES6=1 \
-          -s ENVIRONMENT="web" \
+          -s ENVIRONMENT="web,node" \
           -s ALLOW_MEMORY_GROWTH=1 \
           -s EXPORTED_RUNTIME_METHODS="['ccall', 'cwrap']" \
-          #--preload-file assets
+          --preload-file assets
 
 echo_color = powershell -Command "Write-Host $(1) -ForegroundColor $(2)"
 

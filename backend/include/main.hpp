@@ -2,6 +2,8 @@
 
 #include <cstdint>
 #include <emscripten/emscripten.h>
+#include "variables.hpp"
+#include "word-fetcher.hpp"
 
 #ifdef __INTELLISENSE__
     #undef EMSCRIPTEN_KEEPALIVE
@@ -11,7 +13,7 @@
 extern "C" {
 
 EMSCRIPTEN_KEEPALIVE
-int32_t add_numbers(int32_t a, int32_t b) noexcept;
+int add_numbers(int a, int b) noexcept;
 
 EMSCRIPTEN_KEEPALIVE
 float multiply_floats(float a, float b) noexcept;
