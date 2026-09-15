@@ -1,13 +1,16 @@
 CXX = em++
-BUILD_DIR = build
+BUILD_DIR = ../frontend/src/lib/cpp
+#BUILD_DIR = build
 TARGET = $(BUILD_DIR)/cpp_module.js
+TSD_OUT = cpp_module.d.ts
 
 SRCS = $(wildcard src/*.cpp) $(wildcard src/**/*.cpp)
 INC = -Iinclude -Isrc
 
 CXXFLAGS = -O2 -std=c++20
 
-EMFLAGS = -o $(TARGET) \
+EMFLAGS = --emit-tsd $(TSD_OUT) \
+          -o $(TARGET) \
           -s WASM=1 \
           -s MODULARIZE=1 \
           -s EXPORT_ES6=1 \
