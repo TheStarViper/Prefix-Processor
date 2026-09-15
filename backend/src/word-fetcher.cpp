@@ -5,8 +5,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <random>
 #include <ctime>
+#include <random>
 
 std::vector<std::string> words;
 std::mt19937 random_engine(static_cast<unsigned int>(std::time(nullptr)));
@@ -37,6 +37,13 @@ bool starts_with(const std::string& word, const std::string& prefix) {
            word.compare(0, prefix.size(), prefix) == 0;
 }
 
+bool starts_with_any_known_prefix(const std::string& word){
+     for (const auto& p : prefixes) {
+        if (starts_with(word, p)) return true;
+    }
+    return false;
+}
+
 extern "C"{
     int load_dictionary(){
         std::ifstream dictionaryfile("assets/dictionary.csv");
@@ -55,6 +62,7 @@ extern "C"{
 
             if (contains_only_letters(word) && word.size() >= 2) {
                 words.push_back(std::move(word));
+                word_set.insert(word);
             }
         }
 
@@ -109,14 +117,48 @@ extern "C"{
         return cached_prefix.c_str();
     }
 
-    const char* get_random_game_word() {
-        int random_num;
-        std::uniform_int_distribution<size_t> random(1, 2);
-        random_num = random(random_engine);
-        if (random_num == 1) {
-            return get_random_word();
-        } else {
-            return get_random_word_with_prefix();
+    void generate_game_question(){
+        std::uniform_int_distribution<int> coin_flip(0, 1);
+        bool want_valid_phrase = coin_flip(random_engine) == 1;
+
+        if(want_valid_phrase){
+            std::vector<std::string> matches;
+
+            for (const auto& word : words) {
+                if (starts_with(word, cached_prefix)) matches.push_back(word);
+            }
+
+            if (!matches.empty()){
+                std::uniform_int_distribution<size_t> picker(0, matches.size()-1);
+                const std::string& chosen = matches[picker(random_engine)];
+                current_base = chosen.substr(cached_prefix.size());
+                current_is_valid = true;
+                return;
+            }
         }
+
+        for (int attempt = 0; attempt < 50; ++attempt) {
+            std::uniform_int_distribution<size_t> picker(0, words.size()-1);
+            const std::string& canidate = words[picker(random_engine)];
+            if (canidate.size() < 3) continue;
+            if (starts_with_any_known_prefix(canidate)) continue;
+            if (word_set.count(cached_prefix + canidate) > 0) continue;
+
+            current_base = canidate;
+            current_is_valid = false;
+            return;
+        }
+
+        //fallback
+        current_base = "error";
+        current_is_valid = false;
+    }
+
+    const char* get_current_base(){
+        return current_base.c_str();
+    }
+
+    int get_current_is_valid(){
+        return current_is_valid ? 1 : 0;
     }
 }

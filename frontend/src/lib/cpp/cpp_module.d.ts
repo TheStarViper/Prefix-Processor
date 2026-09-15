@@ -30,6 +30,10 @@ interface WasmModule {
   _get_random_word(): number;
   _get_random_word_with_prefix(): number;
   _randomize_prefix(): void;
+  _fetch_cached_prefix(): number;
+  _generate_game_question(): void;
+  _get_current_base(): number;
+  _get_current_is_valid(): number;
 }
 
 export type MainModule = WasmModule & typeof RuntimeExports;

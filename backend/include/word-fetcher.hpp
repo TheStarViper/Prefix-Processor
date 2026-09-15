@@ -20,5 +20,13 @@ extern "C"{
 
     EMSCRIPTEN_KEEPALIVE
     const char* fetch_cached_prefix();
-    
+
+    EMSCRIPTEN_KEEPALIVE
+    void generate_game_question();
+
+    EMSCRIPTEN_KEEPALIVE
+    const char* get_current_base();
+
+    EMSCRIPTEN_KEEPALIVE
+    int get_current_is_valid();
 }

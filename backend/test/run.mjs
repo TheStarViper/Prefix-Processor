@@ -20,14 +20,30 @@ if (!success) {
     process.exit(1);
 }
 
-
-const get_random_word_with_prefix = Module.cwrap('get_random_word_with_prefix', 'string', []);
+const generate_game_question = Module.cwrap('generate_game_question', null, []);
+const fetch_cached_prefix = Module.cwrap('fetch_cached_prefix', 'string', []);
+const get_current_base = Module.cwrap('get_current_base', 'string', []);
+const get_current_is_valid = Module.cwrap('get_current_is_valid', 'number', []);
 const randomize_prefix = Module.cwrap('randomize_prefix', 'void', []);
 randomize_prefix();
-console.log('Sample random words with prefix: ');
-for (let i = 0; i < 5; i++) {
-    console.log(' -', get_random_word_with_prefix());
+console.log('Generated questions:');
+for (let i = 0; i < 10; i++) {
+
+    generate_game_question();
+    const prefix = fetch_cached_prefix();
+    const base = get_current_base();
+    const valid = get_current_is_valid();
+    console.log(` - ${prefix} + ${base} = ${valid ? 'valid' : 'invalid'}`);
 }
+
+// dictionary load and prefix fetching test #1 ill just keep these around for archive
+// const get_random_word_with_prefix = Module.cwrap('get_random_word_with_prefix', 'string', []);
+// const randomize_prefix = Module.cwrap('randomize_prefix', 'void', []);
+// randomize_prefix();
+// console.log('Sample random words with prefix: ');
+// for (let i = 0; i < 5; i++) {
+//     console.log(' -', get_random_word_with_prefix());
+// }
 
 // compile command from parent dir: mingw32-make -C backend
 // run command without frontend: node backend/test/run.mjs
