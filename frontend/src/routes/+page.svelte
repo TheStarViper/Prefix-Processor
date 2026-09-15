@@ -1,2 +1,100 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+	// component imports
+	import Compound from "$lib/components/Compound.svelte";
+	import YesNo from "$lib/components/YesNo.svelte";
+
+	// svelte internal imports
+	import { onMount } from "svelte";
+
+	// misc imports
+	import { getWord, getPrefix, isValid } from "$lib/logic";
+	import confetti from "canvas-confetti";
+	import { playSound } from "$lib/sound";
+
+	let word: string = $state("");
+	let prefix: string = $state("");
+
+	function updateWordAndPrefix() {
+		word = getWord();
+		prefix = getPrefix();
+	}
+
+	function checkAnswer(answer: boolean) {
+		if (answer === isValid(word, prefix)) {
+			correct();
+		} else {
+			wrong();
+		}
+
+		updateWordAndPrefix();
+	}
+
+	function correct() {
+		playSound("correct.wav");
+		confetti({
+			particleCount: 150,
+			startVelocity: 55,
+			angle: 60,
+			spread: 50,
+			origin: { x: 0 },
+		});
+		confetti({
+			particleCount: 150,
+			startVelocity: 55,
+			angle: 120,
+			spread: 50,
+			origin: { x: 1 },
+		});
+	}
+
+	function wrong() {
+		playSound("incorrect.wav");
+	}
+
+	onMount(() => {
+		updateWordAndPrefix();
+	});
+</script>
+
+<main>
+	<header>
+		<h1>Prefix Processor</h1>
+	</header>
+
+	<section>
+		<Compound {word} {prefix} />
+	</section>
+
+	<section>
+		<YesNo message="Is it a valid English word?" action={checkAnswer} />
+	</section>
+</main>
+
+<style>
+	:root {
+		--header-height: 100px;
+	}
+
+	main {
+		height: 100vh;
+		overflow: hidden;
+
+		display: grid;
+		grid-template-rows: var(--header-height) 3fr 2fr;
+	}
+
+	main > section {
+		border-block: 1px solid black;
+	}
+
+	header {
+		height: 100%;
+		display: grid;
+		place-content: center;
+	}
+
+	h1 {
+		text-align: center;
+		font-size: 3rem;
+	}
+</style>
