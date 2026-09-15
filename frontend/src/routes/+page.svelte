@@ -3,11 +3,12 @@
 	import Compound from "$lib/components/Compound.svelte";
 	import YesNo from "$lib/components/YesNo.svelte";
 
-	// .ts imports
-	import { getWord, getPrefix, isValid } from "$lib/logic";
-
 	// svelte internal imports
 	import { onMount } from "svelte";
+
+	// misc imports
+	import { getWord, getPrefix, isValid } from "$lib/logic";
+	import confetti from "canvas-confetti";
 
 	let word: string = $state("");
 	let prefix: string = $state("");
@@ -15,6 +16,37 @@
 	function updateWordAndPrefix() {
 		word = getWord();
 		prefix = getPrefix();
+	}
+
+	function checkAnswer(answer: boolean) {
+		if (answer === isValid(word, prefix)) {
+			correct();
+		} else {
+			wrong();
+		}
+
+		updateWordAndPrefix();
+	}
+
+	function correct() {
+		confetti({
+			particleCount: 150,
+			startVelocity: 55,
+			angle: 60,
+			spread: 50,
+			origin: { x: 0 },
+		});
+		confetti({
+			particleCount: 150,
+			startVelocity: 55,
+			angle: 120,
+			spread: 50,
+			origin: { x: 1 },
+		});
+	}
+
+	function wrong() {
+		console.warn("*buzzer sound* wrong!");
 	}
 
 	onMount(() => {
@@ -30,11 +62,7 @@
 	</section>
 
 	<section>
-		<YesNo
-			message="Is it a valid English word?"
-			noAction={() => {}}
-			yesAction={() => {}}
-		/>
+		<YesNo message="Is it a valid English word?" action={checkAnswer} />
 	</section>
 </main>
 

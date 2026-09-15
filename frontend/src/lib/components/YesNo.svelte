@@ -1,19 +1,18 @@
 <script lang="ts">
 	interface Props {
 		message: string;
-		yesAction: () => void;
-		noAction: () => void;
+		action: (response: boolean) => void;
 	}
 
-	let { message, yesAction, noAction }: Props = $props();
+	let { message, action }: Props = $props();
 </script>
 
 <div id="yesno">
 	<p>{message}</p>
 
 	<div class="buttons">
-		<button id="yes" onclick={yesAction}>Yes</button>
-		<button id="no" onclick={noAction}>No</button>
+		<button id="yes" onclick={() => action(true)}>Yes</button>
+		<button id="no" onclick={() => action(false)}>No</button>
 	</div>
 </div>
 
