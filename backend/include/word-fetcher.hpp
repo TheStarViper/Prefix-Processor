@@ -2,6 +2,7 @@
 
 #include "variables.hpp"
 #include <emscripten/emscripten.h>
+#include <string>
 
 //OOOOO RED SQUIGLYSSSS
 //it aint broke and i sure aint touchin ts
@@ -19,13 +20,13 @@ extern "C"{
     void randomize_prefix();
 
     EMSCRIPTEN_KEEPALIVE
-    const char* fetch_cached_prefix();
+    std::string fetch_cached_prefix();
 
     EMSCRIPTEN_KEEPALIVE
     void generate_game_question();
 
     EMSCRIPTEN_KEEPALIVE
-    const char* get_current_base();
+    std::string get_current_base();
 
     EMSCRIPTEN_KEEPALIVE
     int get_current_is_valid();

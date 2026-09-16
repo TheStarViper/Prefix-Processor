@@ -8,7 +8,7 @@ int answer_btn_pressed(int yes){
         time_remaining +=3;
         return 1;
     } else {
-        time_remaining -=3;
+        time_remaining -=4;
         return 0;
     }
     generate_game_question();
