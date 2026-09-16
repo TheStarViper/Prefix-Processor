@@ -17,4 +17,8 @@ inline std::string current_base = "ERROR";
 inline bool current_is_valid = false;
 inline std::unordered_set<std::string> word_set;
 
-inline float time_remaining;
+struct Answer {
+    std::string word;
+    int correct;
+};
+inline std::vector<Answer> prev_answers;

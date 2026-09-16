@@ -33,4 +33,14 @@ int get_current_is_valid();
 // the answer button pressed, and it returns 1 for correct and 0 for false
 
 int answer_btn_pressed(int yes);
+
+//get all the words that have been answered in a single string in the format:
+//word 1|word 2|word 3
+//train|car|pickaxe
+const char* get_prev_answer_words();
+
+//get all the correctness thingys from all the answers in a string formmated in
+//1|1|1 for correct,correct,correct
+//0|0|1 for incorrect,incorrect,correct
+const char* get_prev_answer_correctness()
 ```

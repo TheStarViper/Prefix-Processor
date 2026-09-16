@@ -26,6 +26,8 @@ const get_current_base = Module.cwrap('get_current_base', 'string', []);
 const get_current_is_valid = Module.cwrap('get_current_is_valid', 'number', []);
 const randomize_prefix = Module.cwrap('randomize_prefix', 'void', []);
 const answer_btn_pressed = Module.cwrap('answer_btn_pressed', 'number', ['number']);
+const get_prev_answer_words = Module.cwrap('get_prev_answer_words', 'string', []);
+const get_prev_answer_correctness = Module.cwrap('get_prev_answer_correctness', 'string', []);
 
 randomize_prefix();
 console.log('Generated questions:');
@@ -38,6 +40,10 @@ for (let i = 0; i < 10; i++) {
     console.log(` - ${prefix} + ${base} = ${valid ? 'valid' : 'invalid'}`);
     const answer = answer_btn_pressed();
     console.log(answer);
+    const prev_words = get_prev_answer_words();
+    const prev_correctness = get_prev_answer_correctness();
+    console.log(`   Previous answer words: ${prev_words}`);
+    console.log(`   Previous answer correctness: ${prev_correctness}`);
 }
 
 // dictionary load and prefix fetching test #1 ill just keep these around for archive

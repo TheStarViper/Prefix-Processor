@@ -5,4 +5,10 @@
 extern "C"{
     EMSCRIPTEN_KEEPALIVE
     int answer_btn_pressed(int yes);
+
+    EMSCRIPTEN_KEEPALIVE
+    const char* get_prev_answer_words();
+
+    EMSCRIPTEN_KEEPALIVE
+    const char* get_prev_answer_correctness();
 }
