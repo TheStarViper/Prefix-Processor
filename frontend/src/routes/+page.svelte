@@ -2,6 +2,7 @@
 	// component imports
 	import Compound from "$lib/components/Compound.svelte";
 	import YesNo from "$lib/components/YesNo.svelte";
+	import GameOver from "$lib/components/GameOver.svelte";
 
 	// svelte internal imports
 	import { onMount } from "svelte";
@@ -16,6 +17,7 @@
 	let prefix: string = $state("");
 
 	let seconds: number = $state(STARTING_SECONDS);
+	let stillHasTime = $state(true);
 
 	function checkAnswer(answer: boolean) {
 		if (answer === isValid()) {
@@ -53,7 +55,7 @@
 	}
 
 	function outOfTime() {
-		alert("Out of time!");
+		stillHasTime = false;
 	}
 
 	let updateWordAndPrefix = () => {};
@@ -105,8 +107,12 @@
 		<Timer {seconds} {outOfTime} />
 	</header>
 
-	<section>
-		<Compound {word} {prefix} />
+	<section id="center">
+		{#if stillHasTime}
+			<Compound {word} {prefix} />
+		{:else}
+			<GameOver />
+		{/if}
 	</section>
 
 	<section>
@@ -129,6 +135,14 @@
 
 	main > section {
 		border-block: 1px solid black;
+	}
+
+	#center {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		min-height: 100%;
 	}
 
 	header {
