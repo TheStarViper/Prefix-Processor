@@ -11,7 +11,7 @@
 	import confetti from "canvas-confetti";
 	import { playSound } from "$lib/sound";
 	import Timer, { STARTING_SECONDS } from "$lib/components/Timer.svelte";
-	import MainModuleFactory from "$lib/cpp/cpp_module";
+	import { CppManager } from "$lib/cppManager";
 
 	let word: string = $state("");
 	let prefix: string = $state("");
@@ -19,14 +19,40 @@
 	let seconds: number = $state(STARTING_SECONDS);
 	let stillHasTime = $state(true);
 
-	function checkAnswer(response: boolean) {
-		if (response === isValid()) {
-			correct();
-		} else {
-			wrong();
-		}
+	let cppManager = new CppManager(
+		(newWord: string) => {
+			word = newWord;
+		},
+		(newPrefix: string) => {
+			prefix = newPrefix;
+		},
+	);
 
-		updateWordAndPrefix();
+	function checkAnswer(response: boolean) {
+		const isCorrect = cppManager.submitAnswer(response);
+
+		if (isCorrect) {
+			seconds += 2;
+
+			playSound("correct.wav");
+			confetti({
+				particleCount: 150,
+				startVelocity: 55,
+				angle: 60,
+				spread: 50,
+				origin: { x: 0 },
+			});
+			confetti({
+				particleCount: 150,
+				startVelocity: 55,
+				angle: 120,
+				spread: 50,
+				origin: { x: 1 },
+			});
+		} else {
+			playSound("incorrect.wav");
+			seconds -= 5;
+		}
 	}
 
 	function handleGameoverYesNo(response: boolean) {
@@ -37,31 +63,6 @@
 		}
 	}
 
-	function correct() {
-		playSound("correct.wav");
-		confetti({
-			particleCount: 150,
-			startVelocity: 55,
-			angle: 60,
-			spread: 50,
-			origin: { x: 0 },
-		});
-		confetti({
-			particleCount: 150,
-			startVelocity: 55,
-			angle: 120,
-			spread: 50,
-			origin: { x: 1 },
-		});
-
-		seconds += 2;
-	}
-
-	function wrong() {
-		playSound("incorrect.wav");
-		seconds -= 5;
-	}
-
 	function outOfTime() {
 		stillHasTime = false;
 	}
@@ -70,48 +71,7 @@
 		stillHasTime ? "Is it a valid English word?" : "Start new game?",
 	);
 
-	let updateWordAndPrefix = () => {};
-	let isValid = () => false;
-
-	onMount(async () => {
-		const Module = await MainModuleFactory();
-
-		Module._load_dictionary();
-		Module._generate_game_question();
-		Module._randomize_prefix();
-
-		const get_current_base: () => string = Module.cwrap(
-			"get_current_base",
-			"string",
-			[],
-		);
-
-		const fetch_cached_prefix: () => string = Module.cwrap(
-			"fetch_cached_prefix",
-			"string",
-			[],
-		);
-
-		const get_current_is_valid: () => number = Module.cwrap(
-			"get_current_is_valid",
-			"number",
-			[],
-		);
-
-		updateWordAndPrefix = () => {
-			Module._generate_game_question();
-
-			word = get_current_base();
-			prefix = fetch_cached_prefix();
-		};
-
-		isValid = () => {
-			const res = get_current_is_valid();
-			return res === 1;
-		};
-
-		updateWordAndPrefix();
-	});
+	onMount(() => cppManager.init());
 </script>
 
 <main>
