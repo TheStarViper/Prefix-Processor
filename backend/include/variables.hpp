@@ -12,8 +12,8 @@ inline std::vector<std::string> prefixes = {
      "under", "up", "trans", "ex","extra", "infra", 
      "para", "peri", "retro", "tele","mono","uni","em"};
 
-inline std::string cached_prefix = "none";
-inline std::string current_base = "none";
+inline std::string cached_prefix = "ERROR";
+inline std::string current_base = "ERROR";
 inline bool current_is_valid = false;
 inline std::unordered_set<std::string> word_set;
 

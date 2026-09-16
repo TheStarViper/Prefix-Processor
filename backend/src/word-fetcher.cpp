@@ -150,7 +150,7 @@ extern "C"{
         }
 
         //fallback
-        current_base = "error";
+        current_base = "ERROR";
         current_is_valid = false;
     }
 
