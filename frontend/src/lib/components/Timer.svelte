@@ -68,6 +68,8 @@
 		border: 2px solid #000;
 		box-shadow: 4px 4px 0 #000;
 		height: 1.5rem;
+		border-radius: var(--radius);
+		overflow: hidden;
 	}
 
 	.progress-bar {
