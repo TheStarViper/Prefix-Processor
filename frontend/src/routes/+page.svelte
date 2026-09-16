@@ -19,14 +19,22 @@
 	let seconds: number = $state(STARTING_SECONDS);
 	let stillHasTime = $state(true);
 
-	function checkAnswer(answer: boolean) {
-		if (answer === isValid()) {
+	function checkAnswer(response: boolean) {
+		if (response === isValid()) {
 			correct();
 		} else {
 			wrong();
 		}
 
 		updateWordAndPrefix();
+	}
+
+	function handleGameoverYesNo(response: boolean) {
+		if (response) {
+			window.location.reload();
+		} else {
+			alert("pretend that we have a menu screen lol");
+		}
 	}
 
 	function correct() {
@@ -57,6 +65,10 @@
 	function outOfTime() {
 		stillHasTime = false;
 	}
+
+	let message = $derived(
+		stillHasTime ? "Is it a valid English word?" : "Start new game?",
+	);
 
 	let updateWordAndPrefix = () => {};
 	let isValid = () => false;
@@ -116,7 +128,10 @@
 	</section>
 
 	<section>
-		<YesNo message="Is it a valid English word?" action={checkAnswer} />
+		<YesNo
+			{message}
+			action={stillHasTime ? checkAnswer : handleGameoverYesNo}
+		/>
 	</section>
 </main>
 

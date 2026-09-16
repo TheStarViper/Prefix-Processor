@@ -11,7 +11,7 @@
 	let { prefix, word }: Props = $props();
 </script>
 
-<h2 transition:fly={{ x: -500, y: 0, duration: 300 }}>
+<h2 out:fly={{ x: -500, y: 0, duration: 300 }}>
 	<div>
 		{#key prefix}
 			<span id="prefix" transition:slide
