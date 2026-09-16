@@ -7,23 +7,18 @@
 	import { onMount } from "svelte";
 
 	// misc imports
-	import { getWord, getPrefix, isValid } from "$lib/logic";
 	import confetti from "canvas-confetti";
 	import { playSound } from "$lib/sound";
 	import Timer, { STARTING_SECONDS } from "$lib/components/Timer.svelte";
+	import MainModuleFactory from "$lib/cpp/cpp_module";
 
 	let word: string = $state("");
 	let prefix: string = $state("");
 
 	let seconds: number = $state(STARTING_SECONDS);
 
-	function updateWordAndPrefix() {
-		word = getWord();
-		prefix = getPrefix();
-	}
-
 	function checkAnswer(answer: boolean) {
-		if (answer === isValid(word, prefix)) {
+		if (answer === isValid()) {
 			correct();
 		} else {
 			wrong();
@@ -61,7 +56,46 @@
 		alert("Out of time!");
 	}
 
-	onMount(() => {
+	let updateWordAndPrefix = () => {};
+	let isValid = () => false;
+
+	onMount(async () => {
+		const Module = await MainModuleFactory();
+
+		Module._load_dictionary();
+		Module._generate_game_question();
+		Module._randomize_prefix();
+
+		const get_current_base: () => string = Module.cwrap(
+			"get_current_base",
+			"string",
+			[],
+		);
+
+		const fetch_cached_prefix: () => string = Module.cwrap(
+			"fetch_cached_prefix",
+			"string",
+			[],
+		);
+
+		const get_current_is_valid: () => number = Module.cwrap(
+			"get_current_is_valid",
+			"number",
+			[],
+		);
+
+		updateWordAndPrefix = () => {
+			Module._generate_game_question();
+
+			word = get_current_base();
+			prefix = fetch_cached_prefix();
+		};
+
+		isValid = () => {
+			const res = get_current_is_valid();
+			return res === 1;
+		};
+
 		updateWordAndPrefix();
 	});
 </script>

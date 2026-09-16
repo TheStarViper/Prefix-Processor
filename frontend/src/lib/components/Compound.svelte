@@ -50,6 +50,7 @@
 			padding: 1rem;
 			border: 2px solid #000;
 			box-shadow: 4px 4px 0 #000;
+			border-radius: var(--radius);
 			margin-bottom: 1rem;
 
 			&#prefix {

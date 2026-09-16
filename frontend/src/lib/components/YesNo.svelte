@@ -68,6 +68,7 @@
 		background-color: #fff;
 		border: 2px solid #000;
 		box-shadow: 4px 4px 0 #000;
+		border-radius: var(--radius);
 
 		transition:
 			color 0.15s var(--timing),
