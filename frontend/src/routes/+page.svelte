@@ -136,9 +136,4 @@
 		display: grid;
 		place-content: center;
 	}
-
-	h1 {
-		text-align: center;
-		font-size: 4rem;
-	}
 </style>

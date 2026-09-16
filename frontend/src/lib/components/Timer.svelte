@@ -16,18 +16,23 @@
 	let elapsedSeconds: number = $state(0);
 
 	let bars: number[] = $derived.by(() => {
-		const fullBars = Array.from({
-			length: Math.floor((seconds - elapsedSeconds) / STARTING_SECONDS),
-		}).map(() => STARTING_SECONDS);
+		const remaining = Math.max(0, seconds - elapsedSeconds);
+		const count = Math.floor(remaining / STARTING_SECONDS);
+		const remainder = remaining % STARTING_SECONDS;
 
-		const remainder = (seconds - elapsedSeconds) % STARTING_SECONDS;
+		const result = new Array(count).fill(STARTING_SECONDS);
+		if (remainder > 0 || count === 0) {
+			result.push(remainder);
+		}
 
-		if (fullBars.length === 0) return [remainder];
-
-		if (remainder === 0) return fullBars;
-
-		return [...fullBars, remainder];
+		return result;
 	});
+
+	function displayify(num: number): string {
+		const clamped = Math.max(0, num);
+		const rounded = Math.round(clamped * 10) / 10;
+		return `${rounded}`;
+	}
 
 	onMount(() => {
 		setInterval(() => {
@@ -38,7 +43,7 @@
 </script>
 
 <div class="container">
-	<span>{Math.round((seconds - elapsedSeconds) * 10) / 10}s</span>
+	<span>{displayify(seconds - elapsedSeconds)}s</span>
 
 	{#each bars as bar, index (index)}
 		<div class="progress" transition:slide={{ axis: "x", duration: 300 }}>
