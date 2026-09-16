@@ -113,8 +113,8 @@ extern "C"{
         cached_prefix = prefix;
     }
 
-    std::string fetch_cached_prefix() {
-        return cached_prefix;
+    const char* fetch_cached_prefix() {
+        return cached_prefix.c_str();
     }
 
     void generate_game_question(){
@@ -154,8 +154,8 @@ extern "C"{
         current_is_valid = false;
     }
 
-    std::string get_current_base(){
-        return current_base;
+    const char* get_current_base(){
+        return current_base.c_str();
     }
 
     int get_current_is_valid(){

@@ -30,7 +30,7 @@ setup:
 
 build:
 	@echo ===============================================================================================
-	@$(call echo_color, "[1/1] Building C++ into ES6 JS + WASM Module...", "Cyan")
+	@$(call echo_color, "[1/1] Building C++ into WASM Module...", "Cyan")
 	$(CXX) $(SRCS) $(INC) $(CXXFLAGS) $(EMFLAGS)
 	@echo ===============================================================================================
 
