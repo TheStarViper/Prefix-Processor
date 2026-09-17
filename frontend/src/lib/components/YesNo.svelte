@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { decodeSounds } from "$lib/sound";
+	import { slide } from "svelte/transition";
 
 	interface Props {
 		message: string;
@@ -18,7 +19,11 @@
 </script>
 
 <div id="yesno">
-	<p>{message}</p>
+	<div class="message">
+		{#key message}
+			<p transition:slide>{message}</p>
+		{/key}
+	</div>
 
 	<div class="buttons">
 		<button id="yes" onclick={() => interact(true)}>Yes</button>
@@ -34,6 +39,12 @@
 		grid-template-rows: 1fr 3fr;
 		align-items: center;
 		padding: 1rem;
+	}
+
+	.message {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 	}
 
 	p {

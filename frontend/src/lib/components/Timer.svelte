@@ -1,65 +1,68 @@
-<script module>
-	export const STARTING_SECONDS = 30;
-</script>
-
 <script lang="ts">
+	import { TimeManager } from "$lib/timeManager.svelte";
 	import { onMount } from "svelte";
 	import { slide } from "svelte/transition";
 
 	interface Props {
-		seconds: number;
-		outOfTime: () => void;
+		timeManager: TimeManager;
 	}
 
-	let { seconds, outOfTime }: Props = $props();
-
-	let elapsedSeconds: number = $state(0);
+	let { timeManager }: Props = $props();
 
 	let bars: number[] = $derived.by(() => {
-		const fullBars = Array.from({
-			length: Math.floor((seconds - elapsedSeconds) / STARTING_SECONDS),
-		}).map(() => STARTING_SECONDS);
+		const remaining = Math.max(0, timeManager.remaining);
+		const count = Math.floor(remaining / timeManager.STARTING_SECONDS);
+		const remainder = remaining % timeManager.STARTING_SECONDS;
 
-		const remainder = (seconds - elapsedSeconds) % STARTING_SECONDS;
+		const result = new Array(count).fill(timeManager.STARTING_SECONDS);
+		if (remainder > 0 || count === 0) {
+			result.push(remainder);
+		}
 
-		if (fullBars.length === 0) return [remainder];
-
-		if (remainder === 0) return fullBars;
-
-		return [...fullBars, remainder];
-	});
-
-	onMount(() => {
-		setInterval(() => {
-			elapsedSeconds += 0.1;
-			if (seconds - elapsedSeconds <= 0) outOfTime();
-		}, 100);
+		return result;
 	});
 </script>
 
 <div class="container">
-	<span>{Math.round((seconds - elapsedSeconds) * 10) / 10}s</span>
+	<div class="readout">
+		<span>{timeManager.displayifySeconds(timeManager.remaining)}s</span>
+		<span class="small">remaining</span>
+	</div>
 
 	{#each bars as bar, index (index)}
 		<div class="progress" transition:slide={{ axis: "x", duration: 300 }}>
 			<div
 				class="progress-bar"
-				style:width="{(bar / STARTING_SECONDS) * 100}%"
+				style:width="{(bar / timeManager.STARTING_SECONDS) * 100}%"
 			></div>
 		</div>
 	{/each}
+
+	<div class="readout">
+		<span>{timeManager.displayifySeconds(timeManager.elapsedSeconds)}s</span
+		>
+		<span class="small">elapsed</span>
+	</div>
 </div>
 
-<style>
-	span {
-		min-width: 5ch;
-	}
-
+<style lang="scss">
 	.container {
 		display: flex;
 		flex-direction: row;
+		align-items: center;
 		width: 50vw;
 		gap: 1em;
+	}
+
+	.readout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.small {
+			font-size: 0.7em;
+			font-variation-settings: "slnt" -7;
+		}
 	}
 
 	.progress {

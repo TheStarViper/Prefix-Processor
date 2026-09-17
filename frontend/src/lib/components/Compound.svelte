@@ -1,7 +1,7 @@
 <!-- The display module for the prefix + word combo -->
 
 <script lang="ts">
-	import { slide } from "svelte/transition";
+	import { slide, fly } from "svelte/transition";
 
 	interface Props {
 		prefix: string;
@@ -11,31 +11,23 @@
 	let { prefix, word }: Props = $props();
 </script>
 
-<div class="container">
-	<h2>
-		<div>
-			{#key prefix}
-				<span id="prefix" transition:slide
-					>{prefix ? prefix + "-" : ""}</span
-				>
-			{/key}
-		</div>
-		<span id="plus">+</span>
-		<div>
-			{#key word}
-				<span id="word" transition:slide>{word}</span>
-			{/key}
-		</div>
-	</h2>
-</div>
+<h2 out:fly={{ x: -500, y: 0, duration: 300 }}>
+	<div>
+		{#key prefix}
+			<span id="prefix" transition:slide
+				>{prefix ? prefix + "-" : ""}</span
+			>
+		{/key}
+	</div>
+	<span id="plus">+</span>
+	<div>
+		{#key word}
+			<span id="word" transition:slide>{word}</span>
+		{/key}
+	</div>
+</h2>
 
 <style>
-	.container {
-		display: grid;
-		min-height: 100%;
-		place-content: center;
-	}
-
 	h2 {
 		display: grid;
 		grid-template-columns: 1fr max-content 1fr;

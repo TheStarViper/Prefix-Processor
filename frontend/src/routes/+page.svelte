@@ -2,6 +2,8 @@
 	// component imports
 	import Compound from "$lib/components/Compound.svelte";
 	import YesNo from "$lib/components/YesNo.svelte";
+	import Timer from "$lib/components/Timer.svelte";
+	import GameOver from "$lib/components/GameOver.svelte";
 
 	// svelte internal imports
 	import { onMount } from "svelte";
@@ -9,108 +11,92 @@
 	// misc imports
 	import confetti from "canvas-confetti";
 	import { playSound } from "$lib/sound";
-	import Timer, { STARTING_SECONDS } from "$lib/components/Timer.svelte";
-	import MainModuleFactory from "$lib/cpp/cpp_module";
+	import { TimeManager } from "$lib/timeManager.svelte";
+	import { CppManager } from "$lib/cppManager";
 
 	let word: string = $state("");
 	let prefix: string = $state("");
 
-	let seconds: number = $state(STARTING_SECONDS);
+	const cppManager = new CppManager(
+		(newWord: string) => {
+			word = newWord;
+		},
+		(newPrefix: string) => {
+			prefix = newPrefix;
+		},
+	);
+	const timeManager = new TimeManager();
 
-	function checkAnswer(answer: boolean) {
-		if (answer === isValid()) {
-			correct();
+	function checkAnswer(response: boolean) {
+		const isCorrect = cppManager.submitAnswer(response);
+
+		if (isCorrect) {
+			timeManager.seconds += timeManager.CORRECT_SECONDS;
+
+			playSound("correct.wav");
+			confetti({
+				particleCount: 150,
+				startVelocity: 55,
+				angle: 60,
+				spread: 50,
+				origin: { x: 0 },
+			});
+			confetti({
+				particleCount: 150,
+				startVelocity: 55,
+				angle: 120,
+				spread: 50,
+				origin: { x: 1 },
+			});
 		} else {
-			wrong();
+			playSound("incorrect.wav");
+			timeManager.seconds += timeManager.INCORRECT_SECONDS;
 		}
-
-		updateWordAndPrefix();
 	}
 
-	function correct() {
-		playSound("correct.wav");
-		confetti({
-			particleCount: 150,
-			startVelocity: 55,
-			angle: 60,
-			spread: 50,
-			origin: { x: 0 },
-		});
-		confetti({
-			particleCount: 150,
-			startVelocity: 55,
-			angle: 120,
-			spread: 50,
-			origin: { x: 1 },
-		});
-
-		seconds += 2;
+	function handleGameoverYesNo(response: boolean) {
+		if (response) {
+			window.location.reload();
+		} else {
+			alert("pretend that we have a menu screen lol");
+		}
 	}
 
-	function wrong() {
-		playSound("incorrect.wav");
-		seconds -= 5;
-	}
+	let message = $derived(
+		timeManager.stillHasTime
+			? "Is it a valid English word?"
+			: "Start new game?",
+	);
 
-	function outOfTime() {
-		alert("Out of time!");
-	}
-
-	let updateWordAndPrefix = () => {};
-	let isValid = () => false;
-
-	onMount(async () => {
-		const Module = await MainModuleFactory();
-
-		Module._load_dictionary();
-		Module._generate_game_question();
-		Module._randomize_prefix();
-
-		const get_current_base: () => string = Module.cwrap(
-			"get_current_base",
-			"string",
-			[],
-		);
-
-		const fetch_cached_prefix: () => string = Module.cwrap(
-			"fetch_cached_prefix",
-			"string",
-			[],
-		);
-
-		const get_current_is_valid: () => number = Module.cwrap(
-			"get_current_is_valid",
-			"number",
-			[],
-		);
-
-		updateWordAndPrefix = () => {
-			Module._generate_game_question();
-
-			word = get_current_base();
-			prefix = fetch_cached_prefix();
-		};
-
-		isValid = () => {
-			const res = get_current_is_valid();
-			return res === 1;
-		};
-
-		updateWordAndPrefix();
+	onMount(() => {
+		cppManager.init();
+		timeManager.init();
 	});
 </script>
 
 <main>
 	<header>
-		<Timer {seconds} {outOfTime} />
+		<Timer {timeManager} />
 	</header>
 
-	<section>
-		<Compound {word} {prefix} />
+	<section id="center">
+		{#if timeManager.stillHasTime}
+			<Compound {word} {prefix} />
+		{:else}
+			<GameOver
+				{timeManager}
+				getPrevAnswers={cppManager.getPrevAnswers}
+			/>
+		{/if}
 	</section>
 
 	<section>
-		<YesNo message="Is it a valid English word?" action={checkAnswer} />
+		<YesNo
+			{message}
+			action={timeManager.stillHasTime
+				? checkAnswer
+				: handleGameoverYesNo}
+		/>
 	</section>
 </main>
 
@@ -131,14 +117,17 @@
 		border-block: 1px solid black;
 	}
 
+	#center {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		min-height: 100%;
+	}
+
 	header {
 		height: 100%;
 		display: grid;
 		place-content: center;
-	}
-
-	h1 {
-		text-align: center;
-		font-size: 4rem;
 	}
 </style>
