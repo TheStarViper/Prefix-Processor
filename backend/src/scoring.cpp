@@ -6,15 +6,15 @@ std::string prev_definitions_buffer;
 
 int answer_btn_pressed(int yes){
     if(yes == 1&&current_is_valid){
-        prev_answers.push_back({cached_prefix+current_base,1});
+        prev_answers.push_back({cached_prefix+current_base,1,true});
         generate_game_question();
         return 1;
     } else if (yes != 1&&!current_is_valid){
-        prev_answers.push_back({cached_prefix+current_base,1});
+        prev_answers.push_back({cached_prefix+current_base,1,false});
         generate_game_question();
         return 1;
     } else {
-        prev_answers.push_back({cached_prefix+current_base,0});
+        prev_answers.push_back({cached_prefix+current_base,0,current_is_valid});
         generate_game_question();
         return 0;
     }
@@ -41,12 +41,12 @@ const char* get_prev_answer_correctness(){
 const char* get_answer_word_defitionions(){
     prev_definitions_buffer.clear();
     for (const auto& answer : prev_answers) {
-        if (current_is_valid){
-        prev_definitions_buffer += "https://www.merriam-webster.com/dictionary/"+answer.word;
-        prev_definitions_buffer += "|";
-    }else{
-        prev_definitions_buffer += "invalid";
-        prev_definitions_buffer += "|";}
+        if (answer.valid){
+            prev_definitions_buffer += "https://www.merriam-webster.com/dictionary/"+answer.word;
+            prev_definitions_buffer += "|";
+        }else{
+            prev_definitions_buffer += "invalid";
+            prev_definitions_buffer += "|";}
     }
     return prev_definitions_buffer.c_str();
 }

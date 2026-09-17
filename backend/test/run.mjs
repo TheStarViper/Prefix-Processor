@@ -32,7 +32,7 @@ const get_answer_word_definitions = Module.cwrap('get_answer_word_defitionions',
 
 randomize_prefix();
 console.log('Generated questions:');
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 2; i++) {
 
     generate_game_question();
     const prefix = fetch_cached_prefix();
@@ -47,6 +47,7 @@ for (let i = 0; i < 10; i++) {
     console.log(`   Previous answer definitions: ${prev_definitions}`);
     console.log(`   Previous answer words: ${prev_words}`);
     console.log(`   Previous answer correctness: ${prev_correctness}`);
+    console.log(`---------------------------------------------------`);
 }
 
 // dictionary load and prefix fetching test #1 ill just keep these around for archive

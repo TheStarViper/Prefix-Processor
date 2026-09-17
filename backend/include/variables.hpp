@@ -20,5 +20,6 @@ inline std::unordered_set<std::string> word_set;
 struct Answer {
     std::string word;
     int correct;
+    bool valid;
 };
 inline std::vector<Answer> prev_answers;
