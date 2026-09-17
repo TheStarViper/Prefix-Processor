@@ -83,7 +83,10 @@
 		{#if timeManager.stillHasTime}
 			<Compound {word} {prefix} />
 		{:else}
-			<GameOver {timeManager} />
+			<GameOver
+				{timeManager}
+				getPrevAnswers={cppManager.getPrevAnswers}
+			/>
 		{/if}
 	</section>
 
