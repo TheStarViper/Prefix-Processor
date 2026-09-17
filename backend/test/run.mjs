@@ -28,6 +28,7 @@ const randomize_prefix = Module.cwrap('randomize_prefix', 'void', []);
 const answer_btn_pressed = Module.cwrap('answer_btn_pressed', 'number', ['number']);
 const get_prev_answer_words = Module.cwrap('get_prev_answer_words', 'string', []);
 const get_prev_answer_correctness = Module.cwrap('get_prev_answer_correctness', 'string', []);
+const get_answer_word_definitions = Module.cwrap('get_answer_word_defitionions', 'string', []);
 
 randomize_prefix();
 console.log('Generated questions:');
@@ -42,6 +43,8 @@ for (let i = 0; i < 10; i++) {
     console.log(answer);
     const prev_words = get_prev_answer_words();
     const prev_correctness = get_prev_answer_correctness();
+    const prev_definitions = get_answer_word_definitions();
+    console.log(`   Previous answer definitions: ${prev_definitions}`);
     console.log(`   Previous answer words: ${prev_words}`);
     console.log(`   Previous answer correctness: ${prev_correctness}`);
 }

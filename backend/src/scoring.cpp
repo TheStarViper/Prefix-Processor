@@ -41,7 +41,7 @@ const char* get_prev_answer_correctness(){
 const char* get_answer_word_defitionions(){
     prev_definitions_buffer.clear();
     for (const auto& answer : prev_answers) {
-        if (answer.correct ==1){
+        if (current_is_valid){
         prev_definitions_buffer += "https://www.merriam-webster.com/dictionary/"+answer.word;
         prev_definitions_buffer += "|";
     }else{
