@@ -30,6 +30,7 @@ interface WasmModule {
   _generate_game_question(): void;
   _get_prev_answer_words(): number;
   _get_prev_answer_correctness(): number;
+  _get_answer_word_defitionions(): number;
   _load_dictionary(): number;
   _get_random_word(): number;
   _get_random_word_with_prefix(): number;
