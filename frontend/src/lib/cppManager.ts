@@ -1,4 +1,4 @@
-import MainModuleFactory, { type MainModule } from "./cpp/cpp_module";
+import MainModuleFactory from "./cpp/cpp_module";
 
 /**
  * Because some of andrew's c++ functions return a 1 or 0 instead of a boolean
@@ -17,8 +17,8 @@ export class CppManager {
 	public submitAnswer: (answer: boolean) => boolean = (t: boolean) => false;
 
 	constructor(
-		public setWord: (newWord: string) => void,
-		public setPrefix: (newPrefix: string) => void,
+		private setWord: (newWord: string) => void,
+		private setPrefix: (newPrefix: string) => void,
 	) {}
 
 	public updateWordAndPrefix() {

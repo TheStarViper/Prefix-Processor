@@ -2,6 +2,7 @@
 	// component imports
 	import Compound from "$lib/components/Compound.svelte";
 	import YesNo from "$lib/components/YesNo.svelte";
+	import Timer from "$lib/components/Timer.svelte";
 	import GameOver from "$lib/components/GameOver.svelte";
 
 	// svelte internal imports
@@ -10,16 +11,13 @@
 	// misc imports
 	import confetti from "canvas-confetti";
 	import { playSound } from "$lib/sound";
-	import Timer, { STARTING_SECONDS } from "$lib/components/Timer.svelte";
+	import { TimeManager } from "$lib/timeManager.svelte";
 	import { CppManager } from "$lib/cppManager";
 
 	let word: string = $state("");
 	let prefix: string = $state("");
 
-	let seconds: number = $state(STARTING_SECONDS);
-	let stillHasTime = $state(true);
-
-	let cppManager = new CppManager(
+	const cppManager = new CppManager(
 		(newWord: string) => {
 			word = newWord;
 		},
@@ -27,12 +25,13 @@
 			prefix = newPrefix;
 		},
 	);
+	const timeManager = new TimeManager();
 
 	function checkAnswer(response: boolean) {
 		const isCorrect = cppManager.submitAnswer(response);
 
 		if (isCorrect) {
-			seconds += 2;
+			timeManager.seconds += timeManager.CORRECT_SECONDS;
 
 			playSound("correct.wav");
 			confetti({
@@ -51,7 +50,7 @@
 			});
 		} else {
 			playSound("incorrect.wav");
-			seconds -= 5;
+			timeManager.seconds += timeManager.INCORRECT_SECONDS;
 		}
 	}
 
@@ -63,24 +62,25 @@
 		}
 	}
 
-	function outOfTime() {
-		stillHasTime = false;
-	}
-
 	let message = $derived(
-		stillHasTime ? "Is it a valid English word?" : "Start new game?",
+		timeManager.stillHasTime
+			? "Is it a valid English word?"
+			: "Start new game?",
 	);
 
-	onMount(() => cppManager.init());
+	onMount(() => {
+		cppManager.init();
+		timeManager.init();
+	});
 </script>
 
 <main>
 	<header>
-		<Timer {seconds} {outOfTime} />
+		<Timer {timeManager} />
 	</header>
 
 	<section id="center">
-		{#if stillHasTime}
+		{#if timeManager.stillHasTime}
 			<Compound {word} {prefix} />
 		{:else}
 			<GameOver />
@@ -90,7 +90,9 @@
 	<section>
 		<YesNo
 			{message}
-			action={stillHasTime ? checkAnswer : handleGameoverYesNo}
+			action={timeManager.stillHasTime
+				? checkAnswer
+				: handleGameoverYesNo}
 		/>
 	</section>
 </main>

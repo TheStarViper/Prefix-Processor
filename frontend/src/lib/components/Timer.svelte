@@ -1,26 +1,20 @@
-<script module>
-	export const STARTING_SECONDS = 30;
-</script>
-
 <script lang="ts">
+	import { TimeManager } from "$lib/timeManager.svelte";
 	import { onMount } from "svelte";
 	import { slide } from "svelte/transition";
 
 	interface Props {
-		seconds: number;
-		outOfTime: () => void;
+		timeManager: TimeManager;
 	}
 
-	let { seconds, outOfTime }: Props = $props();
-
-	let elapsedSeconds: number = $state(0);
+	let { timeManager }: Props = $props();
 
 	let bars: number[] = $derived.by(() => {
-		const remaining = Math.max(0, seconds - elapsedSeconds);
-		const count = Math.floor(remaining / STARTING_SECONDS);
-		const remainder = remaining % STARTING_SECONDS;
+		const remaining = Math.max(0, timeManager.remaining);
+		const count = Math.floor(remaining / timeManager.STARTING_SECONDS);
+		const remainder = remaining % timeManager.STARTING_SECONDS;
 
-		const result = new Array(count).fill(STARTING_SECONDS);
+		const result = new Array(count).fill(timeManager.STARTING_SECONDS);
 		if (remainder > 0 || count === 0) {
 			result.push(remainder);
 		}
@@ -34,35 +28,27 @@
 		return `${rounded}`;
 	}
 
-	onMount(() => {
-		setInterval(() => {
-			if (seconds - elapsedSeconds > 0) {
-				elapsedSeconds += 0.1;
-			} else {
-				outOfTime();
-			}
-		}, 100);
-	});
+	onMount(() => {});
 </script>
 
 <div class="container">
 	<div class="readout">
-		<span>{displayify(elapsedSeconds)}s</span>
-		<span class="small">elapsed</span>
+		<span>{displayify(timeManager.remaining)}s</span>
+		<span class="small">remaining</span>
 	</div>
 
 	{#each bars as bar, index (index)}
 		<div class="progress" transition:slide={{ axis: "x", duration: 300 }}>
 			<div
 				class="progress-bar"
-				style:width="{(bar / STARTING_SECONDS) * 100}%"
+				style:width="{(bar / timeManager.STARTING_SECONDS) * 100}%"
 			></div>
 		</div>
 	{/each}
 
 	<div class="readout">
-		<span>{displayify(seconds - elapsedSeconds)}s</span>
-		<span class="small">remaining</span>
+		<span>{displayify(timeManager.elapsedSeconds)}s</span>
+		<span class="small">elapsed</span>
 	</div>
 </div>
 
