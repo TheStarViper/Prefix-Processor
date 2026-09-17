@@ -83,7 +83,7 @@
 		{#if timeManager.stillHasTime}
 			<Compound {word} {prefix} />
 		{:else}
-			<GameOver />
+			<GameOver {timeManager} />
 		{/if}
 	</section>
 

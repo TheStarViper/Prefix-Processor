@@ -33,4 +33,10 @@ export class TimeManager {
 	public get remaining() {
 		return this.seconds - this.elapsedSeconds;
 	}
+
+	public displayifySeconds(num: number): string {
+		const clamped = Math.max(0, num);
+		const rounded = Math.round(clamped * 10) / 10;
+		return `${rounded}`;
+	}
 }

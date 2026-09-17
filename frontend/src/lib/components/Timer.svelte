@@ -21,19 +21,11 @@
 
 		return result;
 	});
-
-	function displayify(num: number): string {
-		const clamped = Math.max(0, num);
-		const rounded = Math.round(clamped * 10) / 10;
-		return `${rounded}`;
-	}
-
-	onMount(() => {});
 </script>
 
 <div class="container">
 	<div class="readout">
-		<span>{displayify(timeManager.remaining)}s</span>
+		<span>{timeManager.displayifySeconds(timeManager.remaining)}s</span>
 		<span class="small">remaining</span>
 	</div>
 
@@ -47,7 +39,8 @@
 	{/each}
 
 	<div class="readout">
-		<span>{displayify(timeManager.elapsedSeconds)}s</span>
+		<span>{timeManager.displayifySeconds(timeManager.elapsedSeconds)}s</span
+		>
 		<span class="small">elapsed</span>
 	</div>
 </div>
