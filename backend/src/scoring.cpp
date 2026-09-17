@@ -1,5 +1,9 @@
 #include "scoring.hpp"
 
+std::string prev_words_buffer;
+std::string prev_correctness_buffer;
+std::string prev_definitions_buffer;
+
 int answer_btn_pressed(int yes){
     if(yes == 1&&current_is_valid){
         prev_answers.push_back({cached_prefix+current_base,1});
@@ -17,19 +21,32 @@ int answer_btn_pressed(int yes){
 }
 
 const char* get_prev_answer_words(){
-    std::string result;
+    prev_words_buffer.clear();
     for (const auto& answer : prev_answers) {
-        result += answer.word;
-        result += "|";
+        prev_words_buffer += answer.word;
+        prev_words_buffer += "|";
     }
-    return result.c_str();
+    return prev_words_buffer.c_str();
 }
 
 const char* get_prev_answer_correctness(){
-    std::string result;
+    prev_correctness_buffer.clear();
     for (const auto& answer : prev_answers) {
-        result += std::to_string(answer.correct);
-        result += "|";
+        prev_correctness_buffer += std::to_string(answer.correct);
+        prev_correctness_buffer += "|";
     }
-    return result.c_str();
+    return prev_correctness_buffer.c_str();
+}
+
+const char* get_answer_word_defitionions(){
+    prev_definitions_buffer.clear();
+    for (const auto& answer : prev_answers) {
+        if (answer.correct ==1){
+        prev_definitions_buffer += "https://www.merriam-webster.com/dictionary/"+answer.word;
+        prev_definitions_buffer += "|";
+    }else{
+        prev_definitions_buffer += "invalid";
+        prev_definitions_buffer += "|";}
+    }
+    return prev_definitions_buffer.c_str();
 }

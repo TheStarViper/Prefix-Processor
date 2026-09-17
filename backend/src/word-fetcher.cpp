@@ -143,7 +143,8 @@ extern "C"{
             if (canidate.size() < 3) continue;
             if (starts_with_any_known_prefix(canidate)) continue;
             if (word_set.count(cached_prefix + canidate) > 0) continue;
-
+            if (prev_answers.size() > 0 && prev_answers.back().word == cached_prefix + canidate) continue;
+            
             current_base = canidate;
             current_is_valid = false;
             return;

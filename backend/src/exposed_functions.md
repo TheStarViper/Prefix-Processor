@@ -43,4 +43,12 @@ const char* get_prev_answer_words();
 //1|1|1 for correct,correct,correct
 //0|0|1 for incorrect,incorrect,correct
 const char* get_prev_answer_correctness()
+
+//get all the definitions for all the words that haev been answered in a single string in the format link|link|link
+//https://www.merriam-webster.com/dictionary/example|https://www.merriam-webster.com/dictionary/car
+
+//or another example:
+// link|link|invalid|invalid|link
+// invalid just means the answer is wrong so its just a placeholder so the indexing doesnt get cooked now that i think of it this makes get_prev_answer_correctness() obsolete but oh well
+const char* get_answer_word_defitionions();
 ```

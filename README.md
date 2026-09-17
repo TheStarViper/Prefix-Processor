@@ -26,5 +26,5 @@ yap about front end here ok bye
 - [Scrabble Dictionary](https://github.com/zeisler/scrabble/blob/master/db/dictionary.csv)
   
 # **Contributers**
-- [![@ethmarks](https://avatars.githubusercontent.com/u/139704567?v=4&size=64)](https://github.com/ethmarks) **Ethmarks (front-end designer in Svelte)**
-- [![@TheStarViper](https://avatars.githubusercontent.com/u/87040432?v=4&size=64)](https://github.com/TheStarViper) **TheStarViper/Andrew (back-end designer in C++)**
+- [@ethmarks](https://github.com/ethmarks) **Ethmarks (front-end designer in Svelte)**
+- [@TheStarViper](https://github.com/TheStarViper) **TheStarViper/Andrew (back-end designer in C++)**

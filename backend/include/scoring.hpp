@@ -11,4 +11,7 @@ extern "C"{
 
     EMSCRIPTEN_KEEPALIVE
     const char* get_prev_answer_correctness();
+
+    EMSCRIPTEN_KEEPALIVE
+    const char* get_answer_word_defitionions();
 }
