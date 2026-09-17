@@ -36,14 +36,20 @@
 
 	onMount(() => {
 		setInterval(() => {
-			elapsedSeconds += 0.1;
-			if (seconds - elapsedSeconds <= 0) outOfTime();
+			if (seconds - elapsedSeconds > 0) {
+				elapsedSeconds += 0.1;
+			} else {
+				outOfTime();
+			}
 		}, 100);
 	});
 </script>
 
 <div class="container">
-	<span>{displayify(seconds - elapsedSeconds)}s</span>
+	<div class="readout">
+		<span>{displayify(elapsedSeconds)}s</span>
+		<span class="small">elapsed</span>
+	</div>
 
 	{#each bars as bar, index (index)}
 		<div class="progress" transition:slide={{ axis: "x", duration: 300 }}>
@@ -53,18 +59,31 @@
 			></div>
 		</div>
 	{/each}
+
+	<div class="readout">
+		<span>{displayify(seconds - elapsedSeconds)}s</span>
+		<span class="small">remaining</span>
+	</div>
 </div>
 
-<style>
-	span {
-		min-width: 5ch;
-	}
-
+<style lang="scss">
 	.container {
 		display: flex;
 		flex-direction: row;
+		align-items: center;
 		width: 50vw;
 		gap: 1em;
+	}
+
+	.readout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.small {
+			font-size: 0.7em;
+			font-variation-settings: "slnt" -7;
+		}
 	}
 
 	.progress {
