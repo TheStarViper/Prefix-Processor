@@ -1,16 +1,17 @@
 <script lang="ts">
+	import type { AnswerStats } from "$lib/cppManager";
 	import type { TimeManager } from "$lib/timeManager.svelte";
 	import { onMount } from "svelte";
 	import { fly } from "svelte/transition";
 
 	interface Props {
 		timeManager: TimeManager;
-		getPrevAnswers: () => [string, boolean][];
+		getPrevAnswers: () => AnswerStats[];
 	}
 
 	let { timeManager, getPrevAnswers }: Props = $props();
 
-	let prevAnswers: [string, boolean][] = $state([]);
+	let prevAnswers: AnswerStats[] = $state([]);
 
 	onMount(() => (prevAnswers = getPrevAnswers()));
 </script>
@@ -25,9 +26,11 @@
 			{#each prevAnswers as prevAnswer}
 				<li>
 					<span>
-						<span>{prevAnswer[0]}:</span>
-						<span class={prevAnswer[1] ? "gren" : "red"}
-							>{prevAnswer[1] ? "correct" : "incorrect"}</span
+						<span>{prevAnswer.word}:</span>
+						<span class={prevAnswer.correct ? "gren" : "red"}
+							>{prevAnswer.correct
+								? "correct"
+								: "incorrect"}</span
 						>
 					</span>
 				</li>

@@ -5,11 +5,28 @@ import MainModuleFactory from "./cpp/cpp_module";
  */
 type AndrewBoolean = 0 | 1;
 
+export interface AnswerStats {
+	/** the word */
+	word: string;
+
+	/** real && response */
+	correct: boolean;
+
+	/** a link to merriam webster if it's a real word, and "invalid" otherwise */
+	definition: string;
+
+	/** whether the word exists in the dictionary */
+	real: boolean;
+
+	/** what the user answered */
+	response: boolean;
+}
+
 export class CppManager {
 	public fetchWord: () => string = () => "";
 	public fetchPrefix: () => string = () => "";
 	public submitAnswer: (answer: boolean) => boolean = (t: boolean) => false;
-	public getPrevAnswers: () => [string, boolean][] = () => [];
+	public getPrevAnswers: () => AnswerStats[] = () => [];
 
 	constructor(
 		private setWord: (newWord: string) => void,
@@ -50,27 +67,37 @@ export class CppManager {
 			"string",
 			[],
 		);
+		const getAnswerWordDefitionions: () => string = Module.cwrap(
+			"get_answer_word_defitionions",
+			"string",
+			[],
+		);
 
 		this.getPrevAnswers = () => {
-			console.log(getPrevAnswerWords());
-			console.log(getPrevAnswerCorrectness());
-
 			const prevWords = getPrevAnswerWords().split("|");
-
 			const prevCorrects = getPrevAnswerCorrectness()
 				.split("|")
 				.map((char) => char === "1");
+			const prevDefs = getAnswerWordDefitionions().split("|");
 
-			console.log(prevWords);
-			console.log(prevCorrects);
-
-			if (prevWords.length !== prevCorrects.length) {
+			if (
+				prevWords.length !== prevCorrects.length &&
+				prevWords.length !== prevDefs.length
+			) {
 				throw new Error("prevWords should be the same length as prevCorrects");
 			}
 
-			const prevAnswers = prevWords
-				.map((word, index) => [word, prevCorrects[index]] as [string, boolean])
-				.filter(([word, _]) => word.trim() !== "");
+			const prevAnswers: AnswerStats[] = prevWords
+				.map((word, index) => {
+					const correct = prevCorrects[index];
+					const definition = prevDefs[index];
+
+					const real = definition !== "invalid";
+					const response = correct === real;
+
+					return { word, correct, definition, real, response };
+				})
+				.filter(({ word }) => word.trim() !== "");
 
 			return prevAnswers;
 		};
