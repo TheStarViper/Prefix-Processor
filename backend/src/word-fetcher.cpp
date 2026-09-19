@@ -44,6 +44,19 @@ bool starts_with_any_known_prefix(const std::string& word){
     return false;
 }
 
+
+bool ends_with(const std::string& word, const std::string& suffix) {
+    return word.size() > suffix.size() &&
+           word.compare(word.size() - suffix.size(), suffix.size(), suffix) == 0;
+}
+
+bool ends_with_any_known_suffix(const std::string& word){
+     for (const auto& s : suffixes) {
+        if (ends_with(word, s)) return true;
+    }
+    return false;
+}
+
 extern "C"{
     int load_dictionary(){
         std::ifstream dictionaryfile("assets/dictionary.csv");
@@ -113,8 +126,24 @@ extern "C"{
         cached_prefix = prefix;
     }
 
+    void randomize_suffix(){
+        std::string suffix;
+        if (suffixes.empty()) {
+            cached_suffix = "none";
+            return;
+        }
+
+        std::uniform_int_distribution<size_t> index_picker(0, suffixes.size() - 1);
+        suffix = suffixes[index_picker(random_engine)];
+        cached_suffix = suffix;
+    }
+    
     const char* fetch_cached_prefix() {
         return cached_prefix.c_str();
+    }
+
+    const char* fetch_cached_suffix() {
+        return cached_suffix.c_str();
     }
 
     void generate_game_question(){
@@ -125,13 +154,13 @@ extern "C"{
             std::vector<std::string> matches;
 
             for (const auto& word : words) {
-                if (starts_with(word, cached_prefix)) matches.push_back(word);
+                if (ends_with(word, cached_suffix)) matches.push_back(word);
             }
 
             if (!matches.empty()){
                 std::uniform_int_distribution<size_t> picker(0, matches.size()-1);
                 const std::string& chosen = matches[picker(random_engine)];
-                current_base = chosen.substr(cached_prefix.size());
+                current_base = chosen.substr(cached_suffix.size());
                 current_is_valid = true;
                 return;
             }
@@ -141,9 +170,9 @@ extern "C"{
             std::uniform_int_distribution<size_t> picker(0, words.size()-1);
             const std::string& canidate = words[picker(random_engine)];
             if (canidate.size() < 3) continue;
-            if (starts_with_any_known_prefix(canidate)) continue;
-            if (word_set.count(cached_prefix + canidate) > 0) continue;
-            if (prev_answers.size() > 0 && prev_answers.back().word == cached_prefix + canidate) continue;
+            if (ends_with_any_known_suffix(canidate)) continue;
+            if (word_set.count(cached_suffix + canidate) > 0) continue;
+            if (prev_answers.size() > 0 && prev_answers.back().word == cached_suffix + canidate) continue;
             
             current_base = canidate;
             current_is_valid = false;
@@ -155,8 +184,50 @@ extern "C"{
         current_is_valid = false;
     }
 
+    void generate_game_question_suffixmode(){
+        
+        std::uniform_int_distribution<int> coin_flip(0, 1);
+        bool want_valid_phrase = coin_flip(random_engine) == 1;
+
+        if(want_valid_phrase){
+            std::vector<std::string> matches;
+
+            for (const auto& word : words) {
+                if (ends_with(word, cached_suffix)) matches.push_back(word);
+            }
+
+            if (!matches.empty()){
+                std::uniform_int_distribution<size_t> picker(0, matches.size()-1);
+                const std::string& chosen = matches[picker(random_engine)];
+                current_base = chosen.substr(cached_suffix.size());
+                current_is_valid = true;
+                return;
+            }
+        }
+
+        for (int attempt = 0; attempt < 50; ++attempt) {
+            std::uniform_int_distribution<size_t> picker(0, words.size()-1);
+            const std::string& canidate = words[picker(random_engine)];
+            if (canidate.size() < 3) continue;
+            if (ends_with_any_known_suffix(canidate)) continue;
+            if (word_set.count(cached_suffix + canidate) > 0) continue;
+            if (prev_answers.size() > 0 && prev_answers.back().word == cached_suffix + canidate) continue;
+            
+            current_base = canidate;
+            current_is_valid = false;
+            return;
+        }
+        current_base = "ERROR";
+        current_is_valid = false;
+    }
+
+
     const char* get_current_base(){
         return current_base.c_str();
+    }
+
+    const char* get_current_suffix(){
+        return cached_suffix.c_str();
     }
 
     int get_current_is_valid(){

@@ -29,21 +29,29 @@ const answer_btn_pressed = Module.cwrap('answer_btn_pressed', 'number', ['number
 const get_prev_answer_words = Module.cwrap('get_prev_answer_words', 'string', []);
 const get_prev_answer_correctness = Module.cwrap('get_prev_answer_correctness', 'string', []);
 const get_answer_word_definitions = Module.cwrap('get_answer_word_defitionions', 'string', []);
-
+const generate_game_question_suffixmode = Module.cwrap('generate_game_question_suffixmode', null, []);
+const randomize_suffix = Module.cwrap('randomize_suffix', 'void', []);
+const fetch_cached_suffix = Module.cwrap('fetch_cached_suffix', 'string', []);
+const answer_btn_pressed_suffix = Module.cwrap('answer_btn_pressed_suffix', 'number', ['number']);
 randomize_prefix();
+randomize_suffix();
 console.log('Generated questions:');
 for (let i = 0; i < 2; i++) {
 
-    generate_game_question();
-    const prefix = fetch_cached_prefix();
+    generate_game_question_suffixmode();
+    //const prefix = fetch_cached_prefix();
+    const suffix = fetch_cached_suffix();
     const base = get_current_base();
     const valid = get_current_is_valid();
-    console.log(` - ${prefix} + ${base} = ${valid ? 'valid' : 'invalid'}`);
-    const answer = answer_btn_pressed();
+    //console.log(` pfx ${prefix} + ${base} = ${valid ? 'valid' : 'invalid'}`);
+    console.log(` sfx ${base} + ${suffix} = ${valid ? 'valid' : 'invalid'}`)
+    //const answer = answer_btn_pressed();
+    const answer = answer_btn_pressed_suffix();
     console.log(answer);
     const prev_words = get_prev_answer_words();
     const prev_correctness = get_prev_answer_correctness();
-    const prev_definitions = get_answer_word_definitions();
+    const prev_definitions = get_answer_word_definitions()
+    console.log(`  Previous answer suffix: ${suffix}`);
     console.log(`   Previous answer definitions: ${prev_definitions}`);
     console.log(`   Previous answer words: ${prev_words}`);
     console.log(`   Previous answer correctness: ${prev_correctness}`);

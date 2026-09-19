@@ -1,6 +1,7 @@
 #include "main.hpp"
 #include <iostream>
 
+//ts is testing functions im too lazy to remove so uh look at this
 extern "C" {
     int add_numbers(int a, int b) noexcept {
         return a + b;

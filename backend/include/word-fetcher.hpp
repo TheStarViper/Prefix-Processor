@@ -20,10 +20,19 @@ extern "C"{
     void randomize_prefix();
 
     EMSCRIPTEN_KEEPALIVE
+    void randomize_suffix();
+    
+    EMSCRIPTEN_KEEPALIVE
     const char* fetch_cached_prefix();
 
     EMSCRIPTEN_KEEPALIVE
+    const char* fetch_cached_suffix();
+
+    EMSCRIPTEN_KEEPALIVE
     void generate_game_question();
+
+    EMSCRIPTEN_KEEPALIVE
+    void generate_game_question_suffixmode();
 
     EMSCRIPTEN_KEEPALIVE
     const char* get_current_base();

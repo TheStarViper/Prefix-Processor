@@ -20,6 +20,22 @@ int answer_btn_pressed(int yes){
     }
 }
 
+int answer_btn_pressed_suffix(int yes){
+    if(yes == 1&&current_is_valid){
+        prev_answers.push_back({current_base+cached_suffix,1,true});
+        generate_game_question();
+        return 1;
+    } else if (yes != 1&&!current_is_valid){
+        prev_answers.push_back({current_base+cached_suffix,1,false});
+        generate_game_question();
+        return 1;
+    } else {
+        prev_answers.push_back({current_base+cached_suffix,0,current_is_valid});
+        generate_game_question();
+        return 0;
+    }
+}
+
 const char* get_prev_answer_words(){
     prev_words_buffer.clear();
     for (const auto& answer : prev_answers) {

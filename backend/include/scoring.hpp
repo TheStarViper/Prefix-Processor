@@ -7,6 +7,9 @@ extern "C"{
     int answer_btn_pressed(int yes);
 
     EMSCRIPTEN_KEEPALIVE
+    int answer_btn_pressed_suffix(int yes);
+    
+    EMSCRIPTEN_KEEPALIVE
     const char* get_prev_answer_words();
 
     EMSCRIPTEN_KEEPALIVE
@@ -14,4 +17,5 @@ extern "C"{
 
     EMSCRIPTEN_KEEPALIVE
     const char* get_answer_word_defitionions();
+    
 }
