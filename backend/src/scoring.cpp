@@ -31,7 +31,7 @@ int answer_btn_pressed_suffix(int yes){
         return 1;
     } else {
         prev_answers.push_back({current_base+cached_suffix,0,current_is_valid});
-        generate_game_question();
+        generate_game_question_suffixmode();
         return 0;
     }
 }

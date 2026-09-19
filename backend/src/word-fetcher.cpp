@@ -150,73 +150,73 @@ extern "C"{
         std::uniform_int_distribution<int> coin_flip(0, 1);
         bool want_valid_phrase = coin_flip(random_engine) == 1;
 
-        if(want_valid_phrase){
+        if (want_valid_phrase) {
             std::vector<std::string> matches;
-
             for (const auto& word : words) {
-                if (ends_with(word, cached_suffix)) matches.push_back(word);
+                if (starts_with(word, cached_prefix)) matches.push_back(word);
             }
 
-            if (!matches.empty()){
-                std::uniform_int_distribution<size_t> picker(0, matches.size()-1);
+            if (!matches.empty()) {
+                std::uniform_int_distribution<size_t> picker(0, matches.size() - 1);
                 const std::string& chosen = matches[picker(random_engine)];
-                current_base = chosen.substr(cached_suffix.size());
+                current_base = chosen.substr(cached_prefix.size());
                 current_is_valid = true;
                 return;
             }
         }
 
         for (int attempt = 0; attempt < 50; ++attempt) {
-            std::uniform_int_distribution<size_t> picker(0, words.size()-1);
+            std::uniform_int_distribution<size_t> picker(0, words.size() - 1);
             const std::string& canidate = words[picker(random_engine)];
             if (canidate.size() < 3) continue;
-            if (ends_with_any_known_suffix(canidate)) continue;
-            if (word_set.count(cached_suffix + canidate) > 0) continue;
-            if (prev_answers.size() > 0 && prev_answers.back().word == cached_suffix + canidate) continue;
+            if (starts_with_any_known_prefix(canidate)) continue;
+            if (word_set.count(cached_prefix + canidate) > 0) continue;
+            if (!prev_answers.empty() && prev_answers.back().word == cached_prefix + canidate) continue;
+
             
             current_base = canidate;
             current_is_valid = false;
             return;
         }
-
+        
         //fallback
         current_base = "ERROR";
         current_is_valid = false;
     }
 
     void generate_game_question_suffixmode(){
-        
         std::uniform_int_distribution<int> coin_flip(0, 1);
         bool want_valid_phrase = coin_flip(random_engine) == 1;
 
-        if(want_valid_phrase){
+        if (want_valid_phrase) {
             std::vector<std::string> matches;
-
             for (const auto& word : words) {
                 if (ends_with(word, cached_suffix)) matches.push_back(word);
             }
 
-            if (!matches.empty()){
-                std::uniform_int_distribution<size_t> picker(0, matches.size()-1);
+            if (!matches.empty()) {
+                std::uniform_int_distribution<size_t> picker(0, matches.size() - 1);
                 const std::string& chosen = matches[picker(random_engine)];
-                current_base = chosen.substr(cached_suffix.size());
+                current_base = chosen.substr(0, chosen.size() - cached_suffix.size());
                 current_is_valid = true;
                 return;
             }
         }
 
         for (int attempt = 0; attempt < 50; ++attempt) {
-            std::uniform_int_distribution<size_t> picker(0, words.size()-1);
+            std::uniform_int_distribution<size_t> picker(0, words.size() - 1);
             const std::string& canidate = words[picker(random_engine)];
             if (canidate.size() < 3) continue;
             if (ends_with_any_known_suffix(canidate)) continue;
-            if (word_set.count(cached_suffix + canidate) > 0) continue;
-            if (prev_answers.size() > 0 && prev_answers.back().word == cached_suffix + canidate) continue;
-            
+            if (word_set.count(canidate + cached_suffix) > 0) continue;
+            if (!prev_answers.empty() && prev_answers.back().word == canidate + cached_suffix) continue;
+
             current_base = canidate;
             current_is_valid = false;
             return;
         }
+
+        //fallback
         current_base = "ERROR";
         current_is_valid = false;
     }

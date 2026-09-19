@@ -29,6 +29,7 @@ interface WasmModule {
   _answer_btn_pressed(_0: number): number;
   _generate_game_question(): void;
   _answer_btn_pressed_suffix(_0: number): number;
+  _generate_game_question_suffixmode(): void;
   _get_prev_answer_words(): number;
   _get_prev_answer_correctness(): number;
   _get_answer_word_defitionions(): number;
@@ -39,7 +40,6 @@ interface WasmModule {
   _randomize_suffix(): void;
   _fetch_cached_prefix(): number;
   _fetch_cached_suffix(): number;
-  _generate_game_question_suffixmode(): void;
   _get_current_base(): number;
   _get_current_is_valid(): number;
 }
