@@ -1,48 +1,73 @@
 <script lang="ts">
+	import type { AnswerStats } from "$lib/cppManager";
 	import type { TimeManager } from "$lib/timeManager.svelte";
 	import { onMount } from "svelte";
 	import { fly } from "svelte/transition";
 
 	interface Props {
 		timeManager: TimeManager;
-		getPrevAnswers: () => [string, boolean][];
+		getPrevAnswers: () => AnswerStats[];
 	}
 
 	let { timeManager, getPrevAnswers }: Props = $props();
 
-	let prevAnswers: [string, boolean][] = $state([]);
+	let prevAnswers: AnswerStats[] = $state([]);
+
+	const colorify = (bool: boolean) => (bool ? "green" : "red");
 
 	onMount(() => (prevAnswers = getPrevAnswers()));
 </script>
 
-<div class="container" in:fly={{ x: 500, y: 0, duration: 300, delay: 300 }}>
+<div class="gameover" in:fly={{ x: 500, y: 0, duration: 300, delay: 300 }}>
 	<h2>Game over lol</h2>
 	<div class="postgame">
 		<p>
 			Lasted {timeManager.displayifySeconds(timeManager.elapsedSeconds)} seconds
 		</p>
-		<ol>
-			{#each prevAnswers as prevAnswer}
-				<li>
-					<span>
-						<span>{prevAnswer[0]}:</span>
-						<span class={prevAnswer[1] ? "gren" : "red"}
-							>{prevAnswer[1] ? "correct" : "incorrect"}</span
+		<table>
+			<thead>
+				<tr>
+					<!-- <th></th> -->
+					<th>word</th>
+					<th>you said</th>
+					<th>dictionary says</th>
+					<th>correct?</th>
+				</tr>
+			</thead>
+			<tbody>
+				{#each prevAnswers as { word, correct, definition, real, response }, index}
+					<tr>
+						<!-- <td>{index}.</td> -->
+						<td>{word}</td>
+						<td class={colorify(response)}>
+							{response ? "real" : "fake"}
+						</td>
+						<td class={colorify(real)}
+							>{#if real}
+								<a target="_blank" href={definition}>real</a>
+							{:else}
+								fake
+							{/if}
+						</td>
+						<td class={colorify(correct)}>
+							{correct ? "correct" : "incorrect"}</td
 						>
-					</span>
-				</li>
-			{/each}
-		</ol>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
 	</div>
 </div>
 
-<style>
-	.container {
+<style lang="scss">
+	.gameover {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 		padding-block: 0.5rem;
 		max-height: 100%;
+
+		width: clamp(100px, 100%, 1000px);
 	}
 
 	h2,
@@ -55,7 +80,8 @@
 
 	.postgame {
 		max-height: 100%;
-		overflow-y: scroll;
+		max-width: 100%;
+		overflow: scroll;
 	}
 
 	p {
@@ -63,24 +89,32 @@
 		font-size: 1.2rem;
 	}
 
-	h2 {
-		font-size: 3rem;
+	table {
+		width: 100%;
 	}
 
-	li > span {
-		display: flex;
-		justify-content: space-between;
+	td {
+		text-align: center;
+	}
+
+	h2 {
+		font-size: 3rem;
+		text-align: center;
+	}
+
+	a {
+		color: var(--color);
 	}
 
 	.red,
-	.gren {
+	.green {
 		color: var(--color);
 	}
 
 	.red {
 		--color: #ef657a;
 	}
-	.gren {
+	.green {
 		--color: #98c379;
 	}
 </style>
