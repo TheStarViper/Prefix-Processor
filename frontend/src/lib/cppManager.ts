@@ -5,7 +5,7 @@ import MainModuleFactory from "./cpp/cpp_module";
  */
 type AndrewBoolean = 0 | 1;
 
-export interface AnswerStats {
+export interface Answer {
 	/** the word */
 	word: string;
 
@@ -22,11 +22,18 @@ export interface AnswerStats {
 	response: boolean;
 }
 
+export interface AnswerMetrics {
+	count: number;
+	correct: number;
+	real: number;
+	response: number;
+}
+
 export class CppManager {
 	public fetchWord: () => string = () => "";
 	public fetchPrefix: () => string = () => "";
 	public submitAnswer: (answer: boolean) => boolean = (t: boolean) => false;
-	public getPrevAnswers: () => AnswerStats[] = () => [];
+	public getAnswers: () => Answer[] = () => [];
 
 	constructor(
 		private setWord: (newWord: string) => void,
@@ -73,7 +80,7 @@ export class CppManager {
 			[],
 		);
 
-		this.getPrevAnswers = () => {
+		this.getAnswers = () => {
 			const prevWords = getPrevAnswerWords().split("|");
 			const prevCorrects = getPrevAnswerCorrectness()
 				.split("|")
@@ -87,7 +94,7 @@ export class CppManager {
 				throw new Error("prevWords should be the same length as prevCorrects");
 			}
 
-			const prevAnswers: AnswerStats[] = prevWords
+			const prevAnswers: Answer[] = prevWords
 				.map((word, index) => {
 					const correct = prevCorrects[index];
 					const definition = prevDefs[index];
@@ -103,5 +110,30 @@ export class CppManager {
 		};
 
 		this.updateWordAndPrefix();
+	}
+
+	public createAnswerMetrics(): AnswerMetrics {
+		return {
+			count: 0,
+			correct: 0,
+			real: 0,
+			response: 0,
+		};
+	}
+
+	public calcMetrics(answers: Answer[]): AnswerMetrics {
+		const metrics: AnswerMetrics = this.createAnswerMetrics();
+
+		for (const { correct, real, response } of answers) {
+			metrics.count += 1;
+
+			// I just learned about the unary plus so I wanna use it
+			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus
+			metrics.correct += +correct;
+			metrics.real += +real;
+			metrics.response += +response;
+		}
+
+		return metrics;
 	}
 }

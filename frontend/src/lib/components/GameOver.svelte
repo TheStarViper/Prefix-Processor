@@ -1,33 +1,53 @@
 <script lang="ts">
-	import type { AnswerStats } from "$lib/cppManager";
+	import type { Answer, AnswerMetrics, CppManager } from "$lib/cppManager";
 	import type { TimeManager } from "$lib/timeManager.svelte";
 	import { onMount } from "svelte";
 	import { fly } from "svelte/transition";
 
 	interface Props {
 		timeManager: TimeManager;
-		getPrevAnswers: () => AnswerStats[];
+		cppManager: CppManager;
 	}
 
-	let { timeManager, getPrevAnswers }: Props = $props();
+	let { timeManager, cppManager }: Props = $props();
 
-	let prevAnswers: AnswerStats[] = $state([]);
+	let answers: Answer[] = $state([]);
+	let metrics: AnswerMetrics = $state(cppManager.createAnswerMetrics());
 
 	const colorify = (bool: boolean) => (bool ? "green" : "red");
 
-	onMount(() => (prevAnswers = getPrevAnswers()));
+	onMount(() => {
+		answers = cppManager.getAnswers();
+		metrics = cppManager.calcMetrics(answers);
+	});
 </script>
 
 <div class="gameover" in:fly={{ x: 500, y: 0, duration: 300, delay: 300 }}>
 	<h2>Game over :C</h2>
 
 	<div class="postgame">
-		{#if prevAnswers.length > 0}
+		{#if answers.length > 0}
 			<p>
 				Lasted {timeManager.displayifySeconds(
 					timeManager.elapsedSeconds,
 				)} seconds
 			</p>
+			<div id="metrics">
+				<div>
+					<h4>You</h4>
+					<span>{metrics.response}/{metrics.count}</span>
+				</div>
+
+				<div>
+					<h4>Dictionary</h4>
+					<span>{metrics.real}/{metrics.count}</span>
+				</div>
+
+				<div>
+					<h4>Correct</h4>
+					<span>{metrics.correct}/{metrics.count}</span>
+				</div>
+			</div>
 			<table>
 				<thead>
 					<tr>
@@ -39,7 +59,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{#each prevAnswers as { word, correct, definition, real, response }, index}
+					{#each answers as { word, correct, definition, real, response }, index}
 						<tr>
 							<!-- <td>{index}.</td> -->
 							<td>{word}</td>
@@ -96,11 +116,36 @@
 			max-width: 100%;
 			overflow: scroll;
 
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+
 			p {
 				text-align: center;
 				margin-inline: auto;
 				font-size: 1.2rem;
 				max-width: 65ch;
+			}
+
+			#metrics {
+				display: flex;
+				width: 100%;
+				justify-content: space-evenly;
+
+				div {
+					display: flex;
+					flex-direction: column-reverse;
+					text-align: center;
+
+					span {
+						font-weight: bold;
+						font-size: 1.5rem;
+					}
+
+					h4 {
+						font-weight: normal;
+					}
+				}
 			}
 
 			table {
