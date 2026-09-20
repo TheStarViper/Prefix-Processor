@@ -15,9 +15,8 @@ const char* get_random_word_with_prefix();
 const char* fetch_cached_prefix();
 const char* fetch_cached_suffix();
 
-// randomize the cached prefix
-void randomize_prefix();
-void randomize_suffix();
+// randomize the cached prefix/suffix whichever mode is selected currently
+void randomize_affix()
 
 // generate a new question but usually only use this for the first questions 
 // because answer button presses regen the question

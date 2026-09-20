@@ -114,29 +114,30 @@ extern "C"{
         return lastword.c_str();
     }
 
-    void randomize_prefix(){
-        std::string prefix;
-        if (prefixes.empty()) {
-            cached_prefix = "none";
+    void randomize_affix(){
+        std::string affix;
+        if (current_mode == 0){
+            if (prefixes.empty()) {
+                cached_prefix = "none";
+                return;
+            }
+            std::uniform_int_distribution<size_t> index_picker(0, prefixes.size() - 1);
+            affix = prefixes[index_picker(random_engine)];
+            cached_prefix = affix;
             return;
-        }
+        } else {
+            if (suffixes.empty()) {
+                cached_suffix = "none";
+                return;
+            }
 
-        std::uniform_int_distribution<size_t> index_picker(0, prefixes.size() - 1);
-        prefix = prefixes[index_picker(random_engine)];
-        cached_prefix = prefix;
+            std::uniform_int_distribution<size_t> index_picker(0, suffixes.size() - 1);
+            affix = suffixes[index_picker(random_engine)];
+            cached_suffix = affix;
+        }
+        
     }
 
-    void randomize_suffix(){
-        std::string suffix;
-        if (suffixes.empty()) {
-            cached_suffix = "none";
-            return;
-        }
-
-        std::uniform_int_distribution<size_t> index_picker(0, suffixes.size() - 1);
-        suffix = suffixes[index_picker(random_engine)];
-        cached_suffix = suffix;
-    }
     
     const char* fetch_cached_prefix() {
         return cached_prefix.c_str();
