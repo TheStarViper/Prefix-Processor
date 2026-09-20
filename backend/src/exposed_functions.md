@@ -13,13 +13,16 @@ const char* get_random_word_with_prefix();
 
 // fetch the cached prefix
 const char* fetch_cached_prefix();
+const char* fetch_cached_suffix();
 
 // randomize the cached prefix
 void randomize_prefix();
+void randomize_suffix();
 
 // generate a new question but usually only use this for the first questions 
 // because answer button presses regen the question
 void generate_game_question();
+void generate_game_question_suffixmode();
 
 // fetch the current base word for the current question and this changes every 
 // time the question is generated
@@ -33,6 +36,7 @@ int get_current_is_valid();
 // the answer button pressed, and it returns 1 for correct and 0 for false
 
 int answer_btn_pressed(int yes);
+int answer_btn_pressed_suffix(int yes);
 
 //get all the words that have been answered in a single string in the format:
 //word 1|word 2|word 3
@@ -51,4 +55,6 @@ const char* get_prev_answer_correctness()
 // link|link|invalid|invalid|link
 // invalid just means the answer is wrong so its just a placeholder so the indexing doesnt get cooked now that i think of it this makes get_prev_answer_correctness() obsolete but oh well
 const char* get_answer_word_defitionions();
+
+
 ```
