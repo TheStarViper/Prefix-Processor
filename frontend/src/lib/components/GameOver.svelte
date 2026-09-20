@@ -78,49 +78,44 @@
 		max-height: 100%;
 
 		width: clamp(100px, 100%, 1000px);
-	}
 
-	h2,
-	.postgame {
-		padding: 1rem;
-		border: 2px solid #000;
-		box-shadow: 4px 4px 0 #000;
-		border-radius: var(--radius);
-	}
+		& > * {
+			padding: 1rem;
+			border: 2px solid #000;
+			box-shadow: 4px 4px 0 #000;
+			border-radius: var(--radius);
+		}
 
-	.postgame {
-		max-height: 100%;
-		max-width: 100%;
-		overflow: scroll;
-	}
+		h2 {
+			font-size: 3rem;
+			text-align: center;
+		}
 
-	p {
-		text-align: center;
-		margin-inline: auto;
-		font-size: 1.2rem;
-		max-width: 65ch;
-	}
+		.postgame {
+			max-height: 100%;
+			max-width: 100%;
+			overflow: scroll;
 
-	table {
-		width: 100%;
-	}
+			p {
+				text-align: center;
+				margin-inline: auto;
+				font-size: 1.2rem;
+				max-width: 65ch;
+			}
 
-	td {
-		text-align: center;
-	}
+			table {
+				width: 100%;
 
-	h2 {
-		font-size: 3rem;
-		text-align: center;
-	}
+				td {
+					text-align: center;
 
-	a {
-		color: var(--color);
-	}
-
-	.red,
-	.green {
-		color: var(--color);
+					&,
+					a {
+						color: var(--color);
+					}
+				}
+			}
+		}
 	}
 
 	.red {
