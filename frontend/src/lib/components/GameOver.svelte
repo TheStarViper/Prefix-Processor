@@ -64,7 +64,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-		padding-block: 0.5rem;
 		max-height: 100%;
 
 		width: clamp(100px, 100%, 1000px);

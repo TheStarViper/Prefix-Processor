@@ -27,7 +27,7 @@
 	</div>
 </h2>
 
-<style>
+<style lang="scss">
 	h2 {
 		display: grid;
 		grid-template-columns: 1fr max-content 1fr;
@@ -58,6 +58,18 @@
 				margin-inline: 0.8em;
 				font-size: 3rem;
 				color: #111;
+			}
+		}
+	}
+
+	@media (width < 786px) {
+		h2 {
+			display: flex;
+			flex-direction: column;
+
+			span {
+				font-size: 3rem;
+				margin-inline: auto !important;
 			}
 		}
 	}
