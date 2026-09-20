@@ -37,6 +37,8 @@
 					timeManager.elapsedSeconds,
 				)} seconds
 			</p>
+
+			<h3>Metrics</h3>
 			<div id="metrics">
 				{#each [["You", metrics.response], ["Dictionary", metrics.real], ["Correct", metrics.correct]] as [title, metric]}
 					<div>
@@ -45,6 +47,8 @@
 					</div>
 				{/each}
 			</div>
+
+			<h3>Words</h3>
 			<table>
 				<thead>
 					<tr>
@@ -112,13 +116,13 @@
 			max-height: 100%;
 			max-width: 100%;
 			overflow: scroll;
+			text-align: center;
 
 			display: flex;
 			flex-direction: column;
 			gap: 1rem;
 
 			p {
-				text-align: center;
 				margin-inline: auto;
 				font-size: 1.2rem;
 				max-width: 65ch;
@@ -132,7 +136,6 @@
 				div {
 					display: flex;
 					flex-direction: column-reverse;
-					text-align: center;
 
 					span {
 						font-weight: bold;
@@ -149,8 +152,6 @@
 				width: 100%;
 
 				td {
-					text-align: center;
-
 					&,
 					a {
 						color: var(--color);
