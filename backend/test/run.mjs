@@ -32,7 +32,6 @@ const get_answer_word_definitions = Module.cwrap('get_answer_word_defitionions',
 const generate_game_question_suffixmode = Module.cwrap('generate_game_question_suffixmode', null, []);
 const randomize_suffix = Module.cwrap('randomize_suffix', 'void', []);
 const fetch_cached_suffix = Module.cwrap('fetch_cached_suffix', 'string', []);
-const answer_btn_pressed_suffix = Module.cwrap('answer_btn_pressed_suffix', 'number', ['number']);
 randomize_prefix();
 randomize_suffix();
 console.log('Generated questions:');
@@ -45,8 +44,7 @@ for (let i = 0; i < 2; i++) {
     const valid = get_current_is_valid();
     //console.log(` pfx ${prefix} + ${base} = ${valid ? 'valid' : 'invalid'}`);
     console.log(` sfx ${base} + ${suffix} = ${valid ? 'valid' : 'invalid'}`)
-    //const answer = answer_btn_pressed();
-    const answer = answer_btn_pressed_suffix();
+    const answer = answer_btn_pressed();
     console.log(answer);
     const prev_words = get_prev_answer_words();
     const prev_correctness = get_prev_answer_correctness();

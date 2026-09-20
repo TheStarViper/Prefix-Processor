@@ -27,6 +27,7 @@ inline std::string current_base = "ERROR";
 inline std::string cached_suffix = "ERROR";
 inline bool current_is_valid = false;
 inline std::unordered_set<std::string> word_set;
+inline int current_mode = 0; //0 = prefix \ 1 = suffix
 
 struct Answer {
     std::string word;

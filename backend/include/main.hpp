@@ -11,11 +11,12 @@
 #endif
 
 extern "C" {
+    EMSCRIPTEN_KEEPALIVE
+    int add_numbers(int a, int b) noexcept;
 
-EMSCRIPTEN_KEEPALIVE
-int add_numbers(int a, int b) noexcept;
+    EMSCRIPTEN_KEEPALIVE
+    float multiply_floats(float a, float b) noexcept;
 
-EMSCRIPTEN_KEEPALIVE
-float multiply_floats(float a, float b) noexcept;
-
+    EMSCRIPTEN_KEEPALIVE
+    void swap_gamemode(int mode);
 }

@@ -5,35 +5,17 @@ std::string prev_correctness_buffer;
 std::string prev_definitions_buffer;
 
 int answer_btn_pressed(int yes){
-    if(yes == 1&&current_is_valid){
-        prev_answers.push_back({cached_prefix+current_base,1,true});
-        generate_game_question();
-        return 1;
-    } else if (yes != 1&&!current_is_valid){
-        prev_answers.push_back({cached_prefix+current_base,1,false});
-        generate_game_question();
-        return 1;
-    } else {
-        prev_answers.push_back({cached_prefix+current_base,0,current_is_valid});
-        generate_game_question();
-        return 0;
-    }
-}
+    std::string fullword = current_mode == 0 ? cached_prefix + current_base : current_base + cached_suffix;
 
-int answer_btn_pressed_suffix(int yes){
-    if(yes == 1&&current_is_valid){
-        prev_answers.push_back({current_base+cached_suffix,1,true});
-        generate_game_question();
-        return 1;
-    } else if (yes != 1&&!current_is_valid){
-        prev_answers.push_back({current_base+cached_suffix,1,false});
-        generate_game_question();
-        return 1;
-    } else {
-        prev_answers.push_back({current_base+cached_suffix,0,current_is_valid});
+    bool correct = (yes == 1 && current_is_valid) || (yes != 1 && !current_is_valid);
+
+    prev_answers.push_back({fullword, correct ? 1 : 0, current_is_valid});
+    if (current_mode == 1) {
         generate_game_question_suffixmode();
-        return 0;
+    } else {
+        generate_game_question();
     }
+    return correct ? 1 : 0;
 }
 
 const char* get_prev_answer_words(){

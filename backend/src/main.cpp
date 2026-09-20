@@ -10,6 +10,15 @@ extern "C" {
     float multiply_floats(float a, float b) noexcept {
         return a * b;
     }
+
+    void swap_gamemode(int mode){
+        if (mode == 0){
+            generate_game_question();
+        } else {
+            generate_game_question_suffixmode();
+        }
+        current_mode = mode;
+    }
 }
 
 int main() {

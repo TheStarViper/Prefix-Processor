@@ -36,7 +36,6 @@ int get_current_is_valid();
 // the answer button pressed, and it returns 1 for correct and 0 for false
 
 int answer_btn_pressed(int yes);
-int answer_btn_pressed_suffix(int yes);
 
 //get all the words that have been answered in a single string in the format:
 //word 1|word 2|word 3
@@ -56,5 +55,9 @@ const char* get_prev_answer_correctness()
 // invalid just means the answer is wrong so its just a placeholder so the indexing doesnt get cooked now that i think of it this makes get_prev_answer_correctness() obsolete but oh well
 const char* get_answer_word_defitionions();
 
+//swaps gamemode between prefix and suffix
+//parameter of 0 = prefix and 1 = suffix
+//defaults to prefix on initialization
+void swap_gamemode(int mode)
 
 ```
