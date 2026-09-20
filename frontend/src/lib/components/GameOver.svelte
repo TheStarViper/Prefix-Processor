@@ -19,7 +19,7 @@
 </script>
 
 <div class="gameover" in:fly={{ x: 500, y: 0, duration: 300, delay: 300 }}>
-	<h2>Game over lol</h2>
+	<h2>Game over :C</h2>
 	<div class="postgame">
 		<p>
 			Lasted {timeManager.displayifySeconds(timeManager.elapsedSeconds)} seconds
@@ -30,7 +30,7 @@
 					<!-- <th></th> -->
 					<th>word</th>
 					<th>you said</th>
-					<th>dictionary says</th>
+					<!-- <th>dictionary says</th> -->
 					<th>correct?</th>
 				</tr>
 			</thead>
@@ -49,9 +49,9 @@
 								fake
 							{/if}
 						</td>
-						<td class={colorify(correct)}>
+						<!-- <td class={colorify(correct)}>
 							{correct ? "correct" : "incorrect"}</td
-						>
+						> -->
 					</tr>
 				{/each}
 			</tbody>
