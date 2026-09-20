@@ -20,42 +20,53 @@
 
 <div class="gameover" in:fly={{ x: 500, y: 0, duration: 300, delay: 300 }}>
 	<h2>Game over :C</h2>
+
 	<div class="postgame">
-		<p>
-			Lasted {timeManager.displayifySeconds(timeManager.elapsedSeconds)} seconds
-		</p>
-		<table>
-			<thead>
-				<tr>
-					<!-- <th></th> -->
-					<th>word</th>
-					<th>you said</th>
-					<!-- <th>dictionary says</th> -->
-					<th>correct?</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#each prevAnswers as { word, correct, definition, real, response }, index}
+		{#if prevAnswers.length > 0}
+			<p>
+				Lasted {timeManager.displayifySeconds(
+					timeManager.elapsedSeconds,
+				)} seconds
+			</p>
+			<table>
+				<thead>
 					<tr>
-						<!-- <td>{index}.</td> -->
-						<td>{word}</td>
-						<td class={colorify(response)}>
-							{response ? "real" : "fake"}
-						</td>
-						<td class={colorify(real)}
-							>{#if real}
-								<a target="_blank" href={definition}>real</a>
-							{:else}
-								fake
-							{/if}
-						</td>
-						<!-- <td class={colorify(correct)}>
-							{correct ? "correct" : "incorrect"}</td
-						> -->
+						<!-- <th></th> -->
+						<th>word</th>
+						<th>you said</th>
+						<th>dictionary says</th>
+						<th>correct?</th>
 					</tr>
-				{/each}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{#each prevAnswers as { word, correct, definition, real, response }, index}
+						<tr>
+							<!-- <td>{index}.</td> -->
+							<td>{word}</td>
+							<td class={colorify(response)}>
+								{response ? "real" : "fake"}
+							</td>
+							<td class={colorify(real)}>
+								{#if real}
+									<a target="_blank" href={definition}>real</a
+									>
+								{:else}
+									fake
+								{/if}
+							</td>
+							<td class={colorify(correct)}>
+								{correct ? "correct" : "incorrect"}</td
+							>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		{:else}
+			<p>
+				You didn't answer any words before time ran out. Next time, try
+				guessing whether a word is real or not!
+			</p>
+		{/if}
 	</div>
 </div>
 
@@ -85,7 +96,9 @@
 
 	p {
 		text-align: center;
+		margin-inline: auto;
 		font-size: 1.2rem;
+		max-width: 65ch;
 	}
 
 	table {
