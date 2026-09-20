@@ -12,7 +12,12 @@
 	let { timeManager, cppManager }: Props = $props();
 
 	let answers: Answer[] = $state([]);
-	let metrics: AnswerMetrics = $state(cppManager.createAnswerMetrics());
+	let metrics: AnswerMetrics = $state({
+		count: 0,
+		correct: 0,
+		real: 0,
+		response: 0,
+	});
 
 	const colorify = (bool: boolean) => (bool ? "green" : "red");
 
@@ -33,20 +38,12 @@
 				)} seconds
 			</p>
 			<div id="metrics">
-				<div>
-					<h4>You</h4>
-					<span>{metrics.response}/{metrics.count}</span>
-				</div>
-
-				<div>
-					<h4>Dictionary</h4>
-					<span>{metrics.real}/{metrics.count}</span>
-				</div>
-
-				<div>
-					<h4>Correct</h4>
-					<span>{metrics.correct}/{metrics.count}</span>
-				</div>
+				{#each [["You", metrics.response], ["Dictionary", metrics.real], ["Correct", metrics.correct]] as [title, metric]}
+					<div>
+						<h4>{title}</h4>
+						<span>{metric}/{metrics.count}</span>
+					</div>
+				{/each}
 			</div>
 			<table>
 				<thead>

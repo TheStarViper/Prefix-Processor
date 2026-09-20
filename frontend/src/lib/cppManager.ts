@@ -112,17 +112,13 @@ export class CppManager {
 		this.updateWordAndPrefix();
 	}
 
-	public createAnswerMetrics(): AnswerMetrics {
-		return {
+	public calcMetrics(answers: Answer[]): AnswerMetrics {
+		const metrics: AnswerMetrics = {
 			count: 0,
 			correct: 0,
 			real: 0,
 			response: 0,
 		};
-	}
-
-	public calcMetrics(answers: Answer[]): AnswerMetrics {
-		const metrics: AnswerMetrics = this.createAnswerMetrics();
 
 		for (const { correct, real, response } of answers) {
 			metrics.count += 1;
