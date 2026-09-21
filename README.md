@@ -38,7 +38,11 @@ parameters it takes, and what it returns.
 
 ### Linkage
 
-linking between the two
+We used [Emscripten](https://emscripten.org/) to compile the C++ backend to WASM
+and JS that can run in the browser. The frontend can then access the functions
+via importing them. Void functions can be run directly, but functions that take
+params or return a value need to be wrapped with `Module.cwrap()` before they
+can be used.
 
 # Frontend (Svelte)
 
