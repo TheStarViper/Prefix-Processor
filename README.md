@@ -24,13 +24,7 @@ Emscripten, exposed to a Svelte frontend.
 > **Play it at <https://thestarviper.github.io/Prefix-Processor/>!**
 
 # Backend (C++)
-<<<<<<< HEAD
     ok so basically how i went about developing the backend is just by creating a ton of helper functions to update and fetch the data in the backemd. The backend loads the dictionary of words and creates the questions and holds the past failures and successes so that the frontend can just run a function to fetch the data pre-calculated. the file in backend/src/exposed_functions.md has all the functions documented so that ethmarks knows how each function works, the parameters it takes, and what it returns.
-=======
-
-backend yap and stuff im getting bored of writing this readme
-
->>>>>>> 3ff87ae8ed2fa27af668b0c6cc3aee6989fa9d5d
 ### Linkage
 
 linking between the two

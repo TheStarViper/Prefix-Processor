@@ -24,16 +24,17 @@ const generate_game_question = Module.cwrap('generate_game_question', null, []);
 const fetch_cached_prefix = Module.cwrap('fetch_cached_prefix', 'string', []);
 const get_current_base = Module.cwrap('get_current_base', 'string', []);
 const get_current_is_valid = Module.cwrap('get_current_is_valid', 'number', []);
-const randomize_prefix = Module.cwrap('randomize_prefix', 'void', []);
 const answer_btn_pressed = Module.cwrap('answer_btn_pressed', 'number', ['number']);
 const get_prev_answer_words = Module.cwrap('get_prev_answer_words', 'string', []);
 const get_prev_answer_correctness = Module.cwrap('get_prev_answer_correctness', 'string', []);
 const get_answer_word_definitions = Module.cwrap('get_answer_word_defitionions', 'string', []);
 const generate_game_question_suffixmode = Module.cwrap('generate_game_question_suffixmode', null, []);
-const randomize_suffix = Module.cwrap('randomize_suffix', 'void', []);
 const fetch_cached_suffix = Module.cwrap('fetch_cached_suffix', 'string', []);
-randomize_prefix();
-randomize_suffix();
+const randomize_affix = Module.cwrap('randomize_affix', 'void', []);
+const swap_gamemode = Module.cwrap('swap_gamemode', 'void', []);
+
+swap_gamemode(1);
+randomize_affix();
 console.log('Generated questions:');
 for (let i = 0; i < 2; i++) {
 
