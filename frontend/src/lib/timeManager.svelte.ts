@@ -12,7 +12,7 @@ export class TimeManager {
 	/**
 	 * seconds to lose upon incorrect answer
 	 */
-	public INCORRECT_SECONDS = -5;
+	public INCORRECT_SECONDS = -2;
 
 	public seconds = $state(this.STARTING_SECONDS);
 	public elapsedSeconds = $state(0);
