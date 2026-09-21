@@ -14,8 +14,7 @@ The game logic and dictionary lookups run in C++ compiled to WASM via Emscripten
 Try it out [here](https://thestarviper.github.io/Prefix-Processor/)!
 
 # Backend (C++)
-backend yap and stuff im getting bored of writing this readme
-
+    ok so basically how i went about developing the backend is just by creating a ton of helper functions to update and fetch the data in the backemd. The backend loads the dictionary of words and creates the questions and holds the past failures and successes so that the frontend can just run a function to fetch the data pre-calculated. the file in backend/src/exposed_functions.md has all the functions documented so that ethmarks knows how each function works, the parameters it takes, and what it returns.
 ### Linkage
 linking between the two
 

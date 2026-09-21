@@ -18,6 +18,19 @@ std::string to_lower(std::string text) {
     return text;
 }
 
+
+const std::vector<std::string>& get_active_prefix_list(){
+    if (dynamic_difficulty == 0) return easy_prefixes;
+    if (dynamic_difficulty == 2) return hard_prefixes;
+    return medium_prefixes;
+}
+
+const std::vector<std::string>& get_active_suffix_list(){
+    if (dynamic_difficulty == 0) return easy_suffixes;
+    if (dynamic_difficulty == 2) return hard_suffixes;
+    return medium_suffixes;
+}
+
 std::string extract_csv_fields(const std::string& line){
     std::string field = line.substr(0, line.find(','));
     while (!field.empty() && (field.front() == '"' || std::isspace((unsigned char)field.front())))
@@ -130,12 +143,13 @@ extern "C"{
                 cached_suffix = "none";
                 return;
             }
-
             std::uniform_int_distribution<size_t> index_picker(0, suffixes.size() - 1);
             affix = suffixes[index_picker(random_engine)];
             cached_suffix = affix;
         }
-        
+        if (current_mode == 1){
+            
+        }
     }
 
     
@@ -225,10 +239,6 @@ extern "C"{
 
     const char* get_current_base(){
         return current_base.c_str();
-    }
-
-    const char* get_current_suffix(){
-        return cached_suffix.c_str();
     }
 
     int get_current_is_valid(){

@@ -22,7 +22,7 @@ const char* get_prev_answer_words(){
     prev_words_buffer.clear();
     for (const auto& answer : prev_answers) {
         prev_words_buffer += answer.word;
-        prev_words_buffer += "|";
+        prev_words_buffer += "|"; //uh these lines are just for splitting between so that the frontend can like yk sort through the seperate things cuz i cant return an array to the frontend tpye hsi
     }
     return prev_words_buffer.c_str();
 }
@@ -31,7 +31,7 @@ const char* get_prev_answer_correctness(){
     prev_correctness_buffer.clear();
     for (const auto& answer : prev_answers) {
         prev_correctness_buffer += std::to_string(answer.correct);
-        prev_correctness_buffer += "|";
+        prev_correctness_buffer += "|"; //uh these lines are just for splitting between so that the frontend can like yk sort through the seperate things cuz i cant return an array to the frontend tpye hsi
     }
     return prev_correctness_buffer.c_str();
 }
@@ -41,10 +41,10 @@ const char* get_answer_word_defitionions(){
     for (const auto& answer : prev_answers) {
         if (answer.valid){
             prev_definitions_buffer += "https://www.merriam-webster.com/dictionary/"+answer.word;
-            prev_definitions_buffer += "|";
+            prev_definitions_buffer += "|"; //uh these lines are just for splitting between so that the frontend can like yk sort through the seperate things cuz i cant return an array to the frontend tpye hsi
         }else{
             prev_definitions_buffer += "invalid";
-            prev_definitions_buffer += "|";}
+            prev_definitions_buffer += "|";} //uh these lines are just for splitting between so that the frontend can like yk sort through the seperate things cuz i cant return an array to the frontend tpye hsi
     }
     return prev_definitions_buffer.c_str();
 }
