@@ -50,7 +50,7 @@ export class CppManager {
 
 		Module._load_dictionary();
 		Module._generate_game_question();
-		Module._randomize_affix();
+		Module._randomize_prefix();
 
 		this.fetchWord = Module.cwrap("get_current_base", "string", []);
 		this.fetchPrefix = Module.cwrap("fetch_cached_prefix", "string", []);
