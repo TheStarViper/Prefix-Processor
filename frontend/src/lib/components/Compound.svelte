@@ -14,7 +14,7 @@
 <h2 out:fly={{ x: -500, y: 0, duration: 300 }}>
 	<div>
 		{#key prefix}
-			<span id="prefix" transition:slide
+			<span id="prefix" class="red" transition:slide
 				>{prefix ? prefix + "-" : ""}</span
 			>
 		{/key}
@@ -22,7 +22,7 @@
 	<span id="plus">+</span>
 	<div>
 		{#key word}
-			<span id="word" transition:slide>{word}</span>
+			<span id="word" class="blue" transition:slide>{word}</span>
 		{/key}
 	</div>
 </h2>
@@ -45,13 +45,10 @@
 			border-radius: var(--radius);
 			margin-bottom: 1rem;
 
+			color: var(--color);
+
 			&#prefix {
 				margin-left: auto;
-				color: #ef657a;
-			}
-
-			&#word {
-				color: #5dafef;
 			}
 
 			&#plus {

@@ -160,11 +160,4 @@
 			}
 		}
 	}
-
-	.red {
-		--color: #ef657a;
-	}
-	.green {
-		--color: #98c379;
-	}
 </style>
