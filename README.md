@@ -6,6 +6,8 @@ given is an actual word in the scrabble dictionary or a made up word. It's a
 time attack game where you play until the time runs out and you are given your
 final score.
 
+![](./.github/screenshot1.png)
+
 The game logic and dictionary lookups run in C++ compiled to WASM via
 Emscripten, exposed to a Svelte frontend.
 
@@ -39,6 +41,8 @@ parameters it takes, and what it returns.
 linking between the two
 
 # Frontend (Svelte)
+
+![](./.github/screenshot2.png)
 
 Here's what all the important files in the frontend do:
 
