@@ -29,6 +29,7 @@
 
 	function checkAnswer(response: boolean) {
 		const isCorrect = cppManager.submitAnswer(response);
+		timeManager.debouncedUpdatePlusClass(isCorrect);
 
 		if (isCorrect) {
 			timeManager.seconds += timeManager.CORRECT_SECONDS;
@@ -76,12 +77,13 @@
 
 <main>
 	<header>
+		<h1>Affixle</h1>
 		<Timer {timeManager} />
 	</header>
 
 	<section id="center">
 		{#if timeManager.stillHasTime}
-			<Compound {word} {prefix} />
+			<Compound {word} {prefix} {timeManager} />
 		{:else}
 			<GameOver {timeManager} {cppManager} />
 		{/if}

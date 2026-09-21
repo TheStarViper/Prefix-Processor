@@ -14,3 +14,13 @@ body {
 
 	--radius: 0.3rem;
 }
+
+.red {
+	--color: #ef657a;
+}
+.green {
+	--color: #98c379;
+}
+.blue {
+	--color: #5dafef;
+}

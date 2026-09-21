@@ -26,8 +26,10 @@
 	</div>
 
 	<div class="buttons">
-		<button id="yes" onclick={() => interact(true)}>Yes</button>
-		<button id="no" onclick={() => interact(false)}>No</button>
+		<button id="yes" class="green" onclick={() => interact(true)}
+			>Yes</button
+		>
+		<button id="no" class="red" onclick={() => interact(false)}>No</button>
 	</div>
 </div>
 
@@ -90,16 +92,9 @@
 
 		&:hover,
 		&:active {
-			color: var(--button-color);
+			color: var(--color);
 			transform: translateY(-0.15em);
-			box-shadow: 6px 6px 0 var(--button-color);
-		}
-
-		&#yes {
-			--button-color: #98c379;
-		}
-		&#no {
-			--button-color: #ef657a;
+			box-shadow: 6px 6px 0 var(--color);
 		}
 	}
 </style>

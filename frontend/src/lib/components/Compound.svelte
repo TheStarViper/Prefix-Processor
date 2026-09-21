@@ -1,28 +1,30 @@
 <!-- The display module for the prefix + word combo -->
 
 <script lang="ts">
+	import type { TimeManager } from "$lib/timeManager.svelte";
 	import { slide, fly } from "svelte/transition";
 
 	interface Props {
 		prefix: string;
 		word: string;
+		timeManager: TimeManager;
 	}
 
-	let { prefix, word }: Props = $props();
+	let { prefix, word, timeManager }: Props = $props();
 </script>
 
 <h2 out:fly={{ x: -500, y: 0, duration: 300 }}>
 	<div>
 		{#key prefix}
-			<span id="prefix" transition:slide
+			<span id="prefix" class="red" transition:slide
 				>{prefix ? prefix + "-" : ""}</span
 			>
 		{/key}
 	</div>
-	<span id="plus">+</span>
+	<span id="plus" class={timeManager.plusClass}>+</span>
 	<div>
 		{#key word}
-			<span id="word" transition:slide>{word}</span>
+			<span id="word" class="blue" transition:slide>{word}</span>
 		{/key}
 	</div>
 </h2>
@@ -45,19 +47,21 @@
 			border-radius: var(--radius);
 			margin-bottom: 1rem;
 
+			color: var(--color);
+
 			&#prefix {
 				margin-left: auto;
-				color: #ef657a;
-			}
-
-			&#word {
-				color: #5dafef;
 			}
 
 			&#plus {
 				margin-inline: 0.8em;
 				font-size: 3rem;
-				color: #111;
+
+				transition:
+					color 0.1s ease-out,
+					text-shadow 0.1s ease-out;
+				color: var(--color, #111);
+				text-shadow: 0 0 5px var(--color, transparent);
 			}
 		}
 	}
