@@ -23,7 +23,7 @@
 	});
 </script>
 
-<div class="container">
+<div id="timer">
 	<div class="readout">
 		<span>{timeManager.displayifySeconds(timeManager.remaining)}s</span>
 		<span class="small">remaining</span>
@@ -46,11 +46,11 @@
 </div>
 
 <style lang="scss">
-	.container {
+	#timer {
 		display: flex;
-		flex-direction: row;
 		align-items: center;
-		width: 50vw;
+		width: 100%;
+		max-width: 800px;
 		gap: 1em;
 	}
 

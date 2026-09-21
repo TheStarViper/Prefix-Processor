@@ -83,10 +83,7 @@
 		{#if timeManager.stillHasTime}
 			<Compound {word} {prefix} />
 		{:else}
-			<GameOver
-				{timeManager}
-				getPrevAnswers={cppManager.getPrevAnswers}
-			/>
+			<GameOver {timeManager} {cppManager} />
 		{/if}
 	</section>
 
@@ -107,6 +104,8 @@
 
 	main {
 		height: 100vh;
+		max-width: 100vw;
+		width: 100vw;
 		overflow: hidden;
 
 		display: grid;
@@ -123,11 +122,18 @@
 		justify-content: center;
 		align-items: center;
 		min-height: 100%;
+
+		padding-block: 0.5rem;
 	}
 
-	header {
+	header,
+	section {
+		width: 100vw;
 		height: 100%;
+
 		display: grid;
-		place-content: center;
+		place-items: center;
+
+		padding-inline: 1rem;
 	}
 </style>
