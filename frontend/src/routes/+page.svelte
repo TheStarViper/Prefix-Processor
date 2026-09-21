@@ -76,6 +76,7 @@
 
 <main>
 	<header>
+		<h1>Affixle</h1>
 		<Timer {timeManager} />
 	</header>
 

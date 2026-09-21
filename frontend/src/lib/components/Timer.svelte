@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { TimeManager } from "$lib/timeManager.svelte";
-	import { onMount } from "svelte";
 	import { slide } from "svelte/transition";
 
 	interface Props {
