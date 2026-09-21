@@ -22,14 +22,11 @@ inline std::vector<std::string> suffixes = {
     "ate","en","ify","ize","ise","ish"
 };
 
-
-
 inline std::string cached_prefix = "ERROR";
 inline std::string current_base = "ERROR";
 inline std::string cached_suffix = "ERROR";
 inline bool current_is_valid = false;
 inline std::unordered_set<std::string> word_set;
-inline int current_mode = 0; //0 = prefix \ 1 = suffix
 
 struct Answer {
     std::string word;
@@ -37,14 +34,3 @@ struct Answer {
     bool valid;
 };
 inline std::vector<Answer> prev_answers;
-
-inline int streak = 0;
-inline int dynamic_difficulty = 0;
-inline int diffuculty_change_threshold = 2;
-
-inline std::vector<std::string> easy_words;
-inline std::vector<std::string> med_words;
-inline std::vector<std::string> hard_words;
-
-constexpr int easy_max_length = 4;
-constexpr int med_max_length = 7;

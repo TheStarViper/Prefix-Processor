@@ -17,7 +17,10 @@ extern "C"{
     const char* get_random_word_with_prefix();
     
     EMSCRIPTEN_KEEPALIVE
-    void randomize_affix();
+    void randomize_prefix();
+
+    EMSCRIPTEN_KEEPALIVE
+    void randomize_suffix();
     
     EMSCRIPTEN_KEEPALIVE
     const char* fetch_cached_prefix();

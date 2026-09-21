@@ -13,15 +13,13 @@ const char* get_random_word_with_prefix();
 
 // fetch the cached prefix
 const char* fetch_cached_prefix();
-const char* fetch_cached_suffix();
 
-// randomize the cached prefix/suffix whichever mode is selected currently
-void randomize_affix()
+// randomize the cached prefix
+void randomize_prefix();
 
 // generate a new question but usually only use this for the first questions 
 // because answer button presses regen the question
 void generate_game_question();
-void generate_game_question_suffixmode();
 
 // fetch the current base word for the current question and this changes every 
 // time the question is generated
@@ -53,10 +51,4 @@ const char* get_prev_answer_correctness()
 // link|link|invalid|invalid|link
 // invalid just means the answer is wrong so its just a placeholder so the indexing doesnt get cooked now that i think of it this makes get_prev_answer_correctness() obsolete but oh well
 const char* get_answer_word_defitionions();
-
-//swaps gamemode between prefix and suffix
-//parameter of 0 = prefix and 1 = suffix
-//defaults to prefix on initialization
-void swap_gamemode(int mode)
-
 ```

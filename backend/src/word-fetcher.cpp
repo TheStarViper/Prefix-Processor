@@ -1,5 +1,4 @@
 #include "word-fetcher.hpp"
-#include "variables.hpp"
 #include <algorithm>
 #include <cctype>
 #include <fstream>
@@ -58,12 +57,6 @@ bool ends_with_any_known_suffix(const std::string& word){
     return false;
 }
 
-const std::vector<std::string>& get_active_difficulty_words(){ //returns a vector of the word set diffuculty
-    if (dynamic_difficulty == 0) std::cout <<"ez base";   return easy_words;
-    if (dynamic_difficulty == 2) std::cout <<"hard base"; return hard_words;
-    std::cout <<"medium base"; return med_words;
-}
-
 extern "C"{
     int load_dictionary(){
         std::ifstream dictionaryfile("assets/dictionary.csv");
@@ -81,15 +74,8 @@ extern "C"{
             }
 
             if (contains_only_letters(word) && word.size() >= 2) {
-                word_set.insert(word);
-                if (word.size()<=easy_max_length){
-                    easy_words.push_back(word);
-                } else if (word.size()<=med_max_length){
-                    med_words.push_back(word);
-                } else {
-                    hard_words.push_back(word);
-                }
                 words.push_back(std::move(word));
+                word_set.insert(word);
             }
         }
 
@@ -128,28 +114,29 @@ extern "C"{
         return lastword.c_str();
     }
 
-    void randomize_affix(){
-        std::string affix;
-        if (current_mode == 0){
-            if (prefixes.empty()) {
-                cached_prefix = "none";
-                return;
-            }
-            std::uniform_int_distribution<size_t> index_picker(0, prefixes.size() - 1);
-            affix = prefixes[index_picker(random_engine)];
-            cached_prefix = affix;
+    void randomize_prefix(){
+        std::string prefix;
+        if (prefixes.empty()) {
+            cached_prefix = "none";
             return;
-        } else {
-            if (suffixes.empty()) {
-                cached_suffix = "none";
-                return;
-            }
-            std::uniform_int_distribution<size_t> index_picker(0, suffixes.size() - 1);
-            affix = suffixes[index_picker(random_engine)];
-            cached_suffix = affix;
         }
+
+        std::uniform_int_distribution<size_t> index_picker(0, prefixes.size() - 1);
+        prefix = prefixes[index_picker(random_engine)];
+        cached_prefix = prefix;
     }
 
+    void randomize_suffix(){
+        std::string suffix;
+        if (suffixes.empty()) {
+            cached_suffix = "none";
+            return;
+        }
+
+        std::uniform_int_distribution<size_t> index_picker(0, suffixes.size() - 1);
+        suffix = suffixes[index_picker(random_engine)];
+        cached_suffix = suffix;
+    }
     
     const char* fetch_cached_prefix() {
         return cached_prefix.c_str();
@@ -163,11 +150,9 @@ extern "C"{
         std::uniform_int_distribution<int> coin_flip(0, 1);
         bool want_valid_phrase = coin_flip(random_engine) == 1;
 
-        const auto& pool = get_active_difficulty_words();
-
         if (want_valid_phrase) {
             std::vector<std::string> matches;
-            for (const auto& word : pool) {
+            for (const auto& word : words) {
                 if (starts_with(word, cached_prefix)) matches.push_back(word);
             }
 
@@ -182,7 +167,7 @@ extern "C"{
 
         for (int attempt = 0; attempt < 50; ++attempt) {
             std::uniform_int_distribution<size_t> picker(0, words.size() - 1);
-            const std::string& canidate = pool[picker(random_engine)];
+            const std::string& canidate = words[picker(random_engine)];
             if (canidate.size() < 3) continue;
             if (starts_with_any_known_prefix(canidate)) continue;
             if (word_set.count(cached_prefix + canidate) > 0) continue;
@@ -239,6 +224,10 @@ extern "C"{
 
     const char* get_current_base(){
         return current_base.c_str();
+    }
+
+    const char* get_current_suffix(){
+        return cached_suffix.c_str();
     }
 
     int get_current_is_valid(){
