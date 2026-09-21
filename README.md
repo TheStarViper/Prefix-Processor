@@ -1,4 +1,4 @@
-# **Affixle**
+# Affixle
 
 Affixle is a fast-paced word game that gives you either a prefix or a suffix
 along with a base word and you have to say whether or not the combined phrase
@@ -15,7 +15,7 @@ Emscripten, exposed to a Svelte frontend.
 > This game used to be called "Prefix Processor" in development if you see that
 > name around
 
-# Gameplay Loop
+## Gameplay Loop
 
 1. You're shown something like un + happy or trans + bucket
 2. Tap Yes if you think the prefix + base makes a real word, and No if you
@@ -26,7 +26,7 @@ Emscripten, exposed to a Svelte frontend.
 > [!TIP]
 > **Play it at <https://thestarviper.github.io/Prefix-Processor/>!**
 
-# Backend (C++)
+## Backend (C++)
 
 ok so basically how i went about developing the backend is just by creating a
 ton of helper functions to update and fetch the data in the backemd. The backend
@@ -36,7 +36,7 @@ data pre-calculated. the file in backend/src/exposed_functions.md has all the
 functions documented so that ethmarks knows how each function works, the
 parameters it takes, and what it returns.
 
-### Linkage
+## Linkage
 
 We used [Emscripten](https://emscripten.org/) to compile the C++ backend to WASM
 and JS that can run in the browser. The frontend can then access the functions
@@ -44,7 +44,7 @@ via importing them. Void functions can be run directly, but functions that take
 params or return a value need to be wrapped with `Module.cwrap()` before they
 can be used.
 
-# Frontend (Svelte)
+## Frontend (Svelte)
 
 ![](./.github/screenshot2.png)
 
@@ -71,11 +71,11 @@ Here's what all the important files in the frontend do:
 - `sound.ts`: this script manages the sound. I copied it from
   [the last time I needed to do sound](github.com/ethmarks/hadronize/blob/main/src/lib/ui/sound.svelte.ts)
 
-# **Assets**
+## Assets
 
 - [Scrabble Dictionary](https://github.com/zeisler/scrabble/blob/master/db/dictionary.csv)
 
-# Running Locally
+## Running Locally
 
 Prerequisites:
 
@@ -96,7 +96,7 @@ pnpm install
 pnpm dev
 ```
 
-# **Contributers**
+## **Contributers**
 
 - Ethan ([@ethmarks](https://github.com/ethmarks)): Frontend in Svelte
 - Andrew ([@TheStarViper](https://github.com/TheStarViper)): Backend in C++
