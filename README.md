@@ -67,6 +67,27 @@ Here's what all the important files in the frontend do:
 
 - [Scrabble Dictionary](https://github.com/zeisler/scrabble/blob/master/db/dictionary.csv)
 
+# Running Locally
+
+Prerequisites:
+
+- [pnpm](https://pnpm.io/installation)
+- [emscripten](https://emscripten.org/docs/getting_started/downloads.html)
+
+```sh
+# clone the repo
+git clone https://github.com/TheStarViper/Prefix-Processor.git
+cd Prefix-Processor
+
+# regenerate the wasm (technically optional)
+make -C backend
+
+# start the site
+cd frontend
+pnpm install
+pnpm dev
+```
+
 # **Contributers**
 
 - Ethan ([@ethmarks](https://github.com/ethmarks)): Frontend in Svelte
