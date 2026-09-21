@@ -18,6 +18,9 @@ export class TimeManager {
 	public elapsedSeconds = $state(0);
 	public stillHasTime = $state(true);
 
+	private timer: ReturnType<typeof setTimeout> | null = null;
+	public plusClass: undefined | "red" | "green" = $state(undefined);
+
 	constructor() {}
 
 	public init() {
@@ -38,5 +41,16 @@ export class TimeManager {
 		const clamped = Math.max(0, num);
 		const rounded = Math.round(clamped * 10) / 10;
 		return `${rounded}`;
+	}
+
+	public debouncedUpdatePlusClass(correctness: boolean) {
+		this.plusClass = correctness ? "green" : "red";
+
+		if (this.timer !== null) clearTimeout(this.timer);
+
+		this.timer = setTimeout(() => {
+			this.plusClass = undefined;
+			this.timer = null;
+		}, 1000);
 	}
 }
