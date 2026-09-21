@@ -21,17 +21,47 @@ Emscripten, exposed to a Svelte frontend.
 3. Correct answers add time to the clock, wrong answers deduct time.
 4. The game ends when the timer hits zero
 
+> [!TIP]
 > **Play it at <https://thestarviper.github.io/Prefix-Processor/>!**
 
 # Backend (C++)
-    ok so basically how i went about developing the backend is just by creating a ton of helper functions to update and fetch the data in the backemd. The backend loads the dictionary of words and creates the questions and holds the past failures and successes so that the frontend can just run a function to fetch the data pre-calculated. the file in backend/src/exposed_functions.md has all the functions documented so that ethmarks knows how each function works, the parameters it takes, and what it returns.
+
+ok so basically how i went about developing the backend is just by creating a
+ton of helper functions to update and fetch the data in the backemd. The backend
+loads the dictionary of words and creates the questions and holds the past
+failures and successes so that the frontend can just run a function to fetch the
+data pre-calculated. the file in backend/src/exposed_functions.md has all the
+functions documented so that ethmarks knows how each function works, the
+parameters it takes, and what it returns.
+
 ### Linkage
 
 linking between the two
 
 # Frontend (Svelte)
 
-yap about front end here ok bye
+Here's what all the important files in the frontend do:
+
+- `+page.svelte`: the main page. It does some high-level orchestrator logic and
+  also includes the various components.
+- `Compound.svelte`: this is the component that displays the "prefix + word"
+  combo in the center of the screen.
+- `Timer.svelte`: this is the component that displays the timer at the top of
+  the screen. The progress bar is worth 30 seconds, and if the user ever has
+  more than 30 seconds of time remaining, it splits into multiple progress bars,
+  each worth 30 seconds.
+- `YesNo.svelte`: this is the component with the yes and no buttons at the
+  bottom of the screen.
+- `GameOver.svelte`: this is the component that displays the postgame breakdown
+  in the center of the screen once the timer runs out. The word breakdown is an
+  html table, generated from the output of `getAnswers()`.
+- `cppManager.ts`: this script manages the emscripten bridge to the c++ backend,
+  and also handles some of the logic for parsing the backend's output into a
+  format that the rest of the frontend can easily consume.
+- `timeManager.svelte.ts`: this script manages the timer. It tracks the elapsed
+  time since the game start, and also tracks the seconds remaining.
+- `sound.ts`: this script manages the sound. I copied it from
+  [the last time I needed to do sound](github.com/ethmarks/hadronize/blob/main/src/lib/ui/sound.svelte.ts)
 
 # **Assets**
 
